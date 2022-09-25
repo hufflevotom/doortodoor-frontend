@@ -1,65 +1,78 @@
-import { useEffect, useState } from 'react';
-import {httpClient} from "../../../util/Api";
+import { useEffect, useState } from "react";
+// import { httpClient } from "../../../util/Api";
 
 export const useProvideAuth = () => {
   const [authUser, setAuthUser] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isLoadingUser, setLoadingUser] = useState(true);
   const [isLoading, setLoading] = useState(false);
 
   const fetchStart = () => {
     setLoading(true);
-    setError('');
+    setError("");
   };
 
   const fetchSuccess = () => {
     setLoading(false);
-    setError('');
+    setError("");
   };
 
-  const fetchError = (error) => {
-    setLoading(false);
-    setError(error);
-  };
+  // const fetchError = (error) => {
+  //   setLoading(false);
+  //   setError(error);
+  // };
 
   const userLogin = (user, callbackFun) => {
     fetchStart();
-    httpClient
-      .post('auth/login', user)
-      .then(({ data }) => {
-        if (data.result) {
-          fetchSuccess();
-          httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + data.token.access_token;
-          localStorage.setItem('token', data.token.access_token);
-          getAuthUser();
-          if (callbackFun) callbackFun();
-        } else {
-          fetchError(data.error);
-        }
+    // httpClient
+    //   .post('auth/login', user)
+    //   .then(({ data }) => {
+    //     if (data.result) {
+    fetchSuccess();
+    // httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + data.token.access_token;
+    localStorage.setItem(
+      "token",
+      JSON.stringify({
+        modulos: [
+          "inicio",
+          "monitoreo",
+          "evidencias",
+          "folios",
+          "usuarios",
+          "vehiculos",
+        ],
       })
-      .catch(function (error) {
-        fetchError(error.message);
-      });
+    );
+    getAuthUser();
+    if (callbackFun) callbackFun();
+    // } else {
+    //   fetchError(data.error);
+    // }
+    // })
+    // .catch(function (error) {
+    //   fetchError(error.message);
+    // });
   };
 
   const userSignup = (user, callbackFun) => {
     fetchStart();
-    httpClient
-      .post('auth/register', user)
-      .then(({ data }) => {
-        if (data.result) {
-          fetchSuccess();
-          localStorage.setItem('token', data.token.access_token);
-          httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + data.token.access_token;
-          getAuthUser();
-          if (callbackFun) callbackFun();
-        } else {
-          fetchError(data.error);
-        }
-      })
-      .catch(function (error) {
-        fetchError(error.message);
-      });
+    // httpClient
+    //   .post("auth/register", user)
+    //   .then(({ data }) => {
+    //     if (data.result) {
+    fetchSuccess();
+    // localStorage.setItem("token", data.token.access_token);
+    // httpClient.defaults.headers.common["Authorization"] =
+    //   "Bearer " + data.token.access_token;
+    getAuthUser();
+    if (callbackFun) callbackFun();
+    //   } else {
+    //     fetchError(data.error);
+    //   }
+    // })
+    // .catch(function (error) {
+    //   fetchError(error.message);
+    // });
   };
 
   const sendPasswordResetEmail = (email, callbackFun) => {
@@ -84,40 +97,41 @@ export const useProvideAuth = () => {
 
   const userSignOut = (callbackFun) => {
     fetchStart();
-    httpClient
-      .post('auth/logout')
-      .then(({ data }) => {
-        if (data.result) {
-          fetchSuccess();
-          httpClient.defaults.headers.common['Authorization'] = '';
-          localStorage.removeItem('token');
-          setAuthUser(false);
-          if (callbackFun) callbackFun();
-        } else {
-          fetchError(data.error);
-        }
-      })
-      .catch(function (error) {
-        fetchError(error.message);
-      });
+    // httpClient
+    //   .post("auth/logout")
+    //   .then(({ data }) => {
+    //     if (data.result) {
+    fetchSuccess();
+    //       httpClient.defaults.headers.common["Authorization"] = "";
+    localStorage.removeItem("token");
+    setAuthUser(false);
+    if (callbackFun) callbackFun();
+    //   } else {
+    //     fetchError(data.error);
+    //   }
+    // })
+    // .catch(function (error) {
+    //   fetchError(error.message);
+    // });
   };
 
   const getAuthUser = () => {
+    const token = localStorage.getItem("token");
     fetchStart();
-    httpClient
-      .post('auth/me')
-      .then(({ data }) => {
-        if (data.user) {
-          fetchSuccess();
-          setAuthUser(data.user);
-        } else {
-          fetchError(data.error);
-        }
-      })
-      .catch(function (error) {
-        httpClient.defaults.headers.common['Authorization'] = '';
-        fetchError(error.message);
-      });
+    // httpClient
+    //   .post("auth/me")
+    //   .then(({ data }) => {
+    //     if (data.user) {
+    fetchSuccess();
+    setAuthUser(JSON.parse(token));
+    //   } else {
+    //     fetchError(data.error);
+    //   }
+    // })
+    // .catch(function (error) {
+    //   httpClient.defaults.headers.common["Authorization"] = "";
+    //   fetchError(error.message);
+    // });
   };
 
   // Subscribe to user on mount
@@ -126,24 +140,24 @@ export const useProvideAuth = () => {
   // ... latest auth object.
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-    }
+    const token = localStorage.getItem("token");
+    // if (token) {
+    //   httpClient.defaults.headers.common["Authorization"] = "Bearer " + token;
+    // }
 
-    httpClient
-      .post('auth/me')
-      .then(({ data }) => {
-        if (data.user) {
-          setAuthUser(data.user);
-        }
-        setLoadingUser(false);
-      })
-      .catch(function () {
-        localStorage.removeItem('token');
-        httpClient.defaults.headers.common['Authorization'] = '';
-        setLoadingUser(false);
-      });
+    // httpClient
+    //   .post("auth/me")
+    //   .then(({ data }) => {
+    //     if (data.user) {
+    setAuthUser(JSON.parse(token));
+    // }
+    setLoadingUser(false);
+    // })
+    // .catch(function () {
+    //   localStorage.removeItem("token");
+    //   httpClient.defaults.headers.common["Authorization"] = "";
+    //   setLoadingUser(false);
+    // });
   }, []);
 
   // Return the user object and auth methods

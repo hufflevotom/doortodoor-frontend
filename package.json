@@ -1,6 +1,6 @@
 {
-  "name": "wieldy-hook",
-  "version": "2.5.0",
+  "name": "doortodoor-frontend",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@amcharts/amcharts3-react": "^3.1.0",

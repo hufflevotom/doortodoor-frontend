@@ -1,73 +1,102 @@
 import React from "react";
-import {Button, Checkbox, Form, Input} from "antd";
-import {Link} from "react-router-dom";
-import IntlMessages from "util/IntlMessages";
-import {useAuth} from "../authentication";
+import { Form, Input } from "antd";
+import { useAuth } from "../authentication";
 import AppNotificationContainer from "../components/AppNotificationContainer";
+import { globalVariables } from "../global.style";
+import Boton from "../components/Boton/Boton";
 
 const SignIn = () => {
-  const {isLoading, error, userLogin} = useAuth();
+  const { isLoading, error, userLogin } = useAuth();
 
-  const onFinishFailed = errorInfo => {
-  };
+  const onFinishFailed = (errorInfo) => {};
 
-  const onFinish = values => {
+  const onFinish = (values) => {
     userLogin(values);
   };
 
   return (
-    <div className="gx-app-login-wrap">
-      <div className="gx-app-login-container">
-        <div className="gx-app-login-main-content">
-          <div className="gx-app-logo-content">
-            <div className="gx-app-logo-content-bg">
-              <img src="https://via.placeholder.com/272x395" alt='Neature'/>
-            </div>
-            <div className="gx-app-logo-wid">
-              <h1><IntlMessages id="app.userAuth.signIn"/></h1>
-              <p><IntlMessages id="app.userAuth.bySigning"/></p>
-              <p><IntlMessages id="app.userAuth.getAccount"/></p>
-            </div>
-            <div className="gx-app-logo">
-              <img alt="example" src="/assets/images/logo.png"/>
-            </div>
-          </div>
-          <div className="gx-app-login-content">
-            <Form
-              initialValues={{remember: true}}
-              name="basic"
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              className="gx-signin-form gx-form-row0">
-
-              <Form.Item
-                initialValue="demo@example.com"
-                rules={[{required: true, message: 'The input is not valid E-mail!'}]} name="email">
-                <Input placeholder="Email"/>
-              </Form.Item>
-              <Form.Item
-                initialValue="demo#123"
-                rules={[{required: true, message: 'Please input your Password!'}]} name="password">
-                <Input type="password" placeholder="Password"/>
-              </Form.Item>
-              <Form.Item>
-                <Checkbox><IntlMessages id="appModule.iAccept"/></Checkbox>
-                <span className="gx-signup-form-forgot gx-link"><IntlMessages
-                  id="appModule.termAndCondition"/></span>
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" className="gx-mb-0" htmlType="submit">
-                  <IntlMessages id="app.userAuth.signIn"/>
-                </Button>
-                <span><IntlMessages id="app.userAuth.or"/></span> <Link to="/signup"><IntlMessages
-                id="app.userAuth.signUp"/></Link>
-              </Form.Item>
-              <span
-                className="gx-text-light gx-fs-sm"> demo user email: 'demo@example.com' and password: 'demo#123'</span>
-            </Form>
-          </div>
-          <AppNotificationContainer loading={isLoading} error={error}/>
-        </div>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: `linear-gradient(50deg, ${globalVariables.color.primary["100"]} 0%, ${globalVariables.color.primary["dark"]} 90%)`,
+      }}
+    >
+      <div
+        style={{
+          width: "26%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "40px",
+          borderRadius: "20px",
+          backgroundColor: "white",
+          padding: "50px",
+        }}
+      >
+        <img
+          alt="DoorToDoor-logo"
+          src="/assets/images/logo.png"
+          style={{ width: "70%", paddingTop: "20px" }}
+        />
+        <Form
+          initialValues={{ remember: true }}
+          name="basic"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          layout="vertical"
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+            paddingBotom: "20px",
+          }}
+        >
+          <Form.Item
+            rules={[
+              { required: true, message: "Ingrese un DNI" },
+              {
+                type: "string",
+                min: 8,
+                max: 15,
+                message: "No es un DNI válido!",
+              },
+            ]}
+            name="documento"
+          >
+            <Input placeholder="Ingrese su documento de identidad" />
+          </Form.Item>
+          <Form.Item
+            rules={[
+              { required: true, message: "Ingrese su contraseña!" },
+              {
+                type: "string",
+                min: 3,
+                message: "Debe tener 3 dígitos como mínimo!",
+              },
+            ]}
+            name="contrasena"
+          >
+            <Input type="password" placeholder="Ingrese su contraseña" />
+          </Form.Item>
+          <Form.Item>
+            <Boton
+              type="submit"
+              style={{ width: "100%" }}
+              name="Iniciar sesión"
+            />
+          </Form.Item>
+          <span className="gx-text-light gx-fs-sm">
+            DNI: 73869994 / Contraseña: P1980sl.
+          </span>
+        </Form>
+        <AppNotificationContainer loading={isLoading} error={error} />
       </div>
     </div>
   );
