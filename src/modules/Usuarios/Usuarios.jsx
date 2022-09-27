@@ -6,6 +6,7 @@ import Boton from '../../components/Boton/Boton';
 import ModalUsuario from './ModalUsuario';
 
 import { usuario } from '../../models/usuario';
+import { usuariosService } from '../../services';
 
 
 const Usuarios = () => {
@@ -56,21 +57,15 @@ const Usuarios = () => {
 		setLoading(true);
 		const limit = pagination.pageSize;
 		const offset = pagination.current * pagination.pageSize - pagination.pageSize;
-		// const respuesta = await httpClient.get(`auth/usuarios?limit=${limit}&offset=${offset}`);
-		// const data = respuesta.data.body[0].map((e, i) => ({
-		// 	key: i,
-		// 	apellido: e.apellido,
-		// 	avatar: e.avatar,
-		// 	celular: e.celular,
-		// 	email: e.email,
-		// 	nombre: e.nombre,
-		// 	id: e.id,
-		// 	role: e.role,
-		// 	rolId: e.role.id
-		// }));
+		const respuesta = await usuariosService.getAll(limit, offset, '');
+		const data = respuesta.data.map((e, i) => ({
+			...e,
+			key: i,
+		}));
 		setLoading(false);
-		// setData([...data]);
+		setData([...data]);
 		// setPaginacion({ ...pagination, total: respuesta.data.body[1] });
+		setPaginacion({ ...pagination });
 	};
 
 	const eliminarData = async (record) => {

@@ -7,6 +7,8 @@ import Boton from '../../components/Boton/Boton';
 import ModalVehiculo from './ModalVehiculo';
 
 import { vehiculo } from '../../models/vehiculo';
+import { vehiculosService } from '../../services';
+import { openNotification } from '../../util/utils';
 
 
 const Vehiculos = () => {
@@ -57,30 +59,25 @@ const Vehiculos = () => {
 		setLoading(true);
 		const limit = pagination.pageSize;
 		const offset = pagination.current * pagination.pageSize - pagination.pageSize;
-		// const respuesta = await httpClient.get(`auth/usuarios?limit=${limit}&offset=${offset}`);
-		// const data = respuesta.data.body[0].map((e, i) => ({
-		// 	key: i,
-		// 	apellido: e.apellido,
-		// 	avatar: e.avatar,
-		// 	celular: e.celular,
-		// 	email: e.email,
-		// 	nombre: e.nombre,
-		// 	id: e.id,
-		// 	role: e.role,
-		// 	rolId: e.role.id
-		// }));
+		const respuesta = await vehiculosService.getAll(limit, offset, '');
+		const data = respuesta.data.map((e, i) => ({
+			...e,
+			key: i,
+		}));
 		setLoading(false);
-		// setData([...data]);
+		setData([...data]);
 		// setPaginacion({ ...pagination, total: respuesta.data.body[1] });
+		setPaginacion({ ...pagination });
 	};
 
 	const eliminarData = async (record) => {
 		setLoading(true);
-		// const respuesta = await httpClient.delete("auth/usuarios/" + record.id);
+		const respuesta = await vehiculosService.delete(record._id);
 		// if (respuesta.data.statusCode === 200) {
-		// 	traerDatos(paginacion);
-		// 	openNotification("Registro Eliminado", record.nombre + " fue eliminado con exito", "");
-		// 	setLoading(false);
+		console.log(respuesta);
+		traerDatos(paginacion);
+		openNotification("Registro Eliminado", record.placa + " fue eliminado con exito", "");
+		setLoading(false);
 		// } else {
 		// 	openNotification("Error al Eliminar", "Por favor vuelva a intentarlo", "Alerta");
 		// }
