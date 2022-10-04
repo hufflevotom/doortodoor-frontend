@@ -6,39 +6,39 @@ export const pathPublic = process.env.REACT_APP_PUBLIC_PATH_URL;
 //! Endpoints
 //* Módulo de usuarios
 export const Usuarios = {
-  login: backend + "usuario/sesion",
-  getAll: backend + "usuario",
-  create: backend + "usuario",
-  //   getOne: backend + "usuario/",
-  update: backend + "usuario/",
-  delete: backend + "usuario/",
+  login: backend + "auth/usuario/login",
+  getAll: backend + "auth/usuario",
+  create: backend + "auth/usuario",
+  getOne: backend + "auth/usuario/",
+  update: backend + "auth/usuario/",
+  delete: backend + "auth/usuario/",
 };
 
 //* Módulo de vehiculos
 export const Vehiculos = {
-  getAll: backend + "vehiculo",
-  create: backend + "vehiculo",
-  //   getOne: backend + "vehiculo/",
-  update: backend + "vehiculo/",
-  delete: backend + "vehiculo/",
+  getAll: backend + "transport/vehiculos",
+  create: backend + "transport/vehiculos",
+  getOne: backend + "transport/vehiculos/",
+  update: backend + "transport/vehiculos/",
+  delete: backend + "transport/vehiculos/",
 };
 
 //* Módulo de folios
 export const Folios = {
-  getAll: backend + "folio",
-  create: backend + "folio",
-  //   getOne: backend + "folio/",
-  update: backend + "folio/",
-  delete: backend + "folio/",
-  getActuales: backend + "folio/obtenerFolios",
-  cargarFolios: backend + "folio/cargarFolios",
+  getAll: backend + "document/folio",
+  create: backend + "document/folio",
+  getOne: backend + "document/folio/",
+  update: backend + "document/folio/",
+  delete: backend + "document/folio/",
+  getActuales: backend + "document/folio/obtenerFolios",
+  cargarFolios: backend + "document/folio/cargarFolios",
 };
 
 //* Módulo de evidencias
 export const Evidencias = {
-  getAll: backend + "evidencia",
-  create: backend + "evidencia",
-  //   getOne: backend + "evidencia/",
-  update: backend + "evidencia/",
-  delete: backend + "evidencia/",
+  getAll: backend + "document/evidencia",
+  create: backend + "document/evidencia",
+  getOne: backend + "document/evidencia/",
+  update: backend + "document/evidencia/",
+  delete: backend + "document/evidencia/",
 };
