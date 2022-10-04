@@ -1,3 +1,3 @@
 module.exports = {
-  footerText: 'Copyright Company Name © 2018',
-}
+  footerText: "Copyright Door To Door © " + new Date().getFullYear(),
+};
