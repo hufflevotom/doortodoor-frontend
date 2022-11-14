@@ -1,4 +1,5 @@
-export { evidenciasService } from "./evidencias.service";
-export { foliosService } from "./folios.service";
-export { usuariosService } from "./usuarios.service";
-export { vehiculosService } from "./vehiculos.service";
+export * from "./evidencias.service";
+export * from "./folios.service";
+export * from "./otros.service";
+export * from "./usuarios.service";
+export * from "./vehiculos.service";

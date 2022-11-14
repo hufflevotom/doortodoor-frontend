@@ -18,3 +18,12 @@ export const formatter = new Intl.NumberFormat("es-PE", {
   style: "currency",
   currency: "PEN",
 });
+
+export const format = {
+  labelCol: {
+    span: 6,
+  },
+  wrapperCol: {
+    span: 18,
+  },
+};

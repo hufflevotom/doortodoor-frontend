@@ -6,12 +6,12 @@ export const pathPublic = process.env.REACT_APP_PUBLIC_PATH_URL;
 //! Endpoints
 //* Módulo de usuarios
 export const Usuarios = {
-  login: backend + "auth/usuario/login",
-  getAll: backend + "auth/usuario",
-  create: backend + "auth/usuario",
-  getOne: backend + "auth/usuario/",
-  update: backend + "auth/usuario/",
-  delete: backend + "auth/usuario/",
+  login: backend + "auth/usuarios/login",
+  getAll: backend + "auth/usuarios",
+  create: backend + "auth/usuarios",
+  getOne: backend + "auth/usuarios/",
+  update: backend + "auth/usuarios/",
+  delete: backend + "auth/usuarios/",
 };
 
 //* Módulo de vehiculos
@@ -25,13 +25,13 @@ export const Vehiculos = {
 
 //* Módulo de folios
 export const Folios = {
-  getAll: backend + "document/folio",
-  create: backend + "document/folio",
-  getOne: backend + "document/folio/",
-  update: backend + "document/folio/",
-  delete: backend + "document/folio/",
-  getActuales: backend + "document/folio/obtenerFolios",
-  cargarFolios: backend + "document/folio/cargarFolios",
+  getAll: backend + "document/folios",
+  create: backend + "document/folios",
+  getOne: backend + "document/folios/",
+  update: backend + "document/folios/",
+  delete: backend + "document/folios/",
+  getActuales: backend + "document/folios/obtenerFolios",
+  cargarFolios: backend + "document/folios/cargarFolios",
 };
 
 //* Módulo de evidencias
@@ -41,4 +41,15 @@ export const Evidencias = {
   getOne: backend + "document/evidencia/",
   update: backend + "document/evidencia/",
   delete: backend + "document/evidencia/",
+};
+
+//* Otros
+export const Otros = {
+  Roles: {
+    getAll: backend + "auth/roles",
+    create: backend + "auth/roles",
+    getOne: backend + "auth/roles/",
+    update: backend + "auth/roles/",
+    delete: backend + "auth/roles/",
+  },
 };

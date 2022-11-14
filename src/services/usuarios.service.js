@@ -11,12 +11,19 @@ const getAll = async (limit, offset, busqueda = "") => {
 };
 
 const create = async (body) => {
+  console.log(body);
   const response = await httpClient.post(Usuarios.create, body);
+  console.log(response);
   return response;
 };
 
 const getOne = async (id) => {
   const response = await httpClient.get(Usuarios.getOne + id);
+  return response;
+};
+
+const login = async (data) => {
+  const response = await httpClient.post(Usuarios.login, data);
   return response;
 };
 
@@ -34,6 +41,7 @@ export const usuariosService = {
   getAll,
   create,
   getOne,
+  login,
   update,
   delete: _delete,
 };

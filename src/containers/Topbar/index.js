@@ -66,26 +66,36 @@ const Topbar = () => {
         <div style={{ fontSize: "18px" }}>{title.pathname.split("/")[1]}</div>
         <div
           style={{
-            marginRight: "10px",
+            width: "100%",
+            height: "100%",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "end",
-            gap: "8px",
+            alignItems: "center",
+            justifyContent: "end",
           }}
         >
-          <span style={{ fontSize: "16px" }}>
-            {user.nombre && user.nombre} {user.apellidos && user.apellidos}
-          </span>
-          <span style={{ fontSize: "11px", color: "gray" }}>
-            {user.dni && user.dni}
-          </span>
+          <div
+            style={{
+              marginRight: "10px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "end",
+              gap: "8px",
+            }}
+          >
+            <span style={{ fontSize: "16px" }}>
+              {user.nombre && user.nombre} {user.apellidos && user.apellidos}
+            </span>
+            <span style={{ fontSize: "11px", color: "gray" }}>
+              {user.documento && user.documento}
+            </span>
+          </div>
+          <Divider type="vertical" />
+          <Tooltip placement="bottom" title="Cerrar Sesión">
+            <Button style={{ margin: 0 }} type="text" onClick={onLogoutClick}>
+              <LogoutOutlined style={{ color: "red" }} />
+            </Button>
+          </Tooltip>
         </div>
-        <Divider type="vertical" />
-        <Tooltip placement="bottom" title="Cerrar Sesión">
-          <Button style={{ margin: 0 }} type="text" onClick={onLogoutClick}>
-            <LogoutOutlined style={{ color: "red" }} />
-          </Button>
-        </Tooltip>
       </div>
     </Header>
   );
