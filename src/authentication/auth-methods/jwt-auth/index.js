@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { usuariosService } from "../../../services/usuarios.service";
+import { httpClient } from "../../../util/Api";
 // import { httpClient } from "../../../util/Api";
 
 export const useProvideAuth = () => {
@@ -17,41 +19,41 @@ export const useProvideAuth = () => {
     setError("");
   };
 
-  // const fetchError = (error) => {
-  //   setLoading(false);
-  //   setError(error);
-  // };
+  const fetchError = (error) => {
+    setLoading(false);
+    setError(error);
+  };
 
   const userLogin = (user, callbackFun) => {
     fetchStart();
-    // httpClient
-    //   .post('auth/login', user)
-    //   .then(({ data }) => {
-    //     if (data.result) {
-    fetchSuccess();
-    // httpClient.defaults.headers.common['Authorization'] = 'Bearer ' + data.token.access_token;
-    localStorage.setItem(
-      "token",
-      JSON.stringify({
-        modulos: [
-          "inicio",
-          "monitoreo",
-          "evidencias",
-          "folios",
-          "usuarios",
-          "vehiculos",
-        ],
+    usuariosService
+      .login(user)
+      .then(({ data }) => {
+        if (data.statusCode === 200) {
+          fetchSuccess();
+          // httpClient.defaults.headers.common["Authorization"] =
+          //   "Bearer " + data.token.access_token;
+          localStorage.setItem(
+            "token",
+            JSON.stringify({
+              ...data.body,
+              modulos: [
+                "inicio",
+                "monitoreo",
+                "evidencias",
+                "folios",
+                "usuarios",
+                "vehiculos",
+              ],
+            })
+          );
+          getAuthUser();
+          if (callbackFun) callbackFun();
+        }
       })
-    );
-    getAuthUser();
-    if (callbackFun) callbackFun();
-    // } else {
-    //   fetchError(data.error);
-    // }
-    // })
-    // .catch(function (error) {
-    //   fetchError(error.message);
-    // });
+      .catch(function (error) {
+        fetchError(error.message);
+      });
   };
 
   const userSignup = (user, callbackFun) => {
