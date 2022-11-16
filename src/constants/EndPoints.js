@@ -52,4 +52,11 @@ export const Otros = {
     update: backend + "auth/roles/",
     delete: backend + "auth/roles/",
   },
+  Estado: {
+    getAll: backend + "transport/estadoVehiculo",
+    create: backend + "transport/estadoVehiculo",
+    getOne: backend + "transport/estadoVehiculo/",
+    update: backend + "transport/estadoVehiculo/",
+    delete: backend + "transport/estadoVehiculo/",
+  },
 };

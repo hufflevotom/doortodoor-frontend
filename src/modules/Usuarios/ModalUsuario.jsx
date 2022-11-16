@@ -4,6 +4,7 @@ import { Button, Modal, Form, Input, Select } from "antd";
 
 import { format, openNotification } from "../../util/utils";
 import { otrosService, usuariosService } from "../../services";
+import { Otros } from "../../constants/EndPoints";
 
 const ModalUsuario = ({
   datoSeleccionado,
@@ -20,7 +21,12 @@ const ModalUsuario = ({
   const onSearchRoles = async (value) => {
     try {
       const arr = [];
-      const respuesta = await otrosService.getAll(10, 0, value);
+      const respuesta = await otrosService.getAll(
+        Otros.Roles.getAll,
+        10,
+        0,
+        value
+      );
       respuesta.data.body.forEach((item) => {
         arr.push({
           ...item,

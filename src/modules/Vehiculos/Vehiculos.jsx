@@ -42,7 +42,7 @@ const Vehiculos = () => {
 
   const showDeleteConfirm = (record) => {
     confirm({
-      title: "¿Esta seguro que desea eliminar " + record.nombre + "?",
+      title: "¿Esta seguro que desea eliminar " + record.placa + "?",
       content: "",
       okText: "Eliminar",
       okType: "danger",
@@ -60,7 +60,6 @@ const Vehiculos = () => {
     const offset =
       pagination.current * pagination.pageSize - pagination.pageSize;
     const respuesta = await vehiculosService.getAll(limit, offset, "");
-    console.log(respuesta);
     const data = respuesta.data.body.map((e, i) => ({
       ...e,
       key: i,
@@ -73,18 +72,22 @@ const Vehiculos = () => {
   const eliminarData = async (record) => {
     setLoading(true);
     const respuesta = await vehiculosService.delete(record._id);
-    // if (respuesta.data.statusCode === 200) {
-    console.log(respuesta);
-    traerDatos(paginacion);
-    openNotification(
-      "Registro Eliminado",
-      record.placa + " fue eliminado con exito",
-      ""
-    );
-    setLoading(false);
-    // } else {
-    // 	openNotification("Error al Eliminar", "Por favor vuelva a intentarlo", "Alerta");
-    // }
+    if (respuesta.data.statusCode === 200) {
+      console.log(respuesta);
+      traerDatos(paginacion);
+      openNotification(
+        "Registro Eliminado",
+        record.placa + " fue eliminado con exito",
+        ""
+      );
+      setLoading(false);
+    } else {
+      openNotification(
+        "Error al Eliminar",
+        "Por favor vuelva a intentarlo",
+        "Alerta"
+      );
+    }
   };
 
   const columns = [
@@ -121,8 +124,8 @@ const Vehiculos = () => {
     },
     {
       title: "Estado",
-      dataIndex: "estado",
-      key: "estado",
+      dataIndex: ["idEstadoVehiculo", "descripcion"],
+      key: "idEstadoVehiculo",
     },
     {
       title: "",
