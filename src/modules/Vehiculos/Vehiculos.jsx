@@ -63,6 +63,9 @@ const Vehiculos = () => {
     const data = respuesta.data.body.map((e, i) => ({
       ...e,
       key: i,
+      fechaFabricacion: moment(e.fechaFabricacion),
+      vencimientoSoat: moment(e.vencimientoSoat),
+      vencimientoRevision: moment(e.vencimientoRevision),
     }));
     setLoading(false);
     setData([...data]);
@@ -111,7 +114,7 @@ const Vehiculos = () => {
       dataIndex: "vencimientoSoat",
       key: "vencimientoSoat",
       render: (text) => {
-        return <span>{moment(text).format("DD/MM/YYYY")}</span>;
+        return <span>{text.format("DD/MM/YYYY")}</span>;
       },
     },
     {
@@ -119,7 +122,7 @@ const Vehiculos = () => {
       dataIndex: "vencimientoRevision",
       key: "vencimientoRevision",
       render: (text) => {
-        return <span>{moment(text).format("DD/MM/YYYY")}</span>;
+        return <span>{text.format("DD/MM/YYYY")}</span>;
       },
     },
     {

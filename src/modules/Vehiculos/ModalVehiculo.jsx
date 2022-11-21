@@ -160,15 +160,13 @@ const ModalVehiculo = ({
           value: datoSeleccionado.idEstadoVehiculo._id,
           label: datoSeleccionado.idEstadoVehiculo.descripcion,
         },
-        fechaFabricacion: moment(datoSeleccionado.fechaFabricacion),
-        vencimientoSoat: moment(datoSeleccionado.vencimientoSoat),
-        vencimientoRevision: moment(datoSeleccionado.vencimientoRevision),
+        // fechaFabricacion: moment(datoSeleccionado.fechaFabricacion),
+        // vencimientoSoat: moment(datoSeleccionado.vencimientoSoat),
+        // vencimientoRevision: moment(datoSeleccionado.vencimientoRevision),
       });
-      setFechaFabricacion(moment(datoSeleccionado.fechaFabricacion || null));
-      setVencimientoSoat(moment(datoSeleccionado.vencimientoSoat || null));
-      setVencimientoRevision(
-        moment(datoSeleccionado.vencimientoRevision || null)
-      );
+      setFechaFabricacion(datoSeleccionado.fechaFabricacion || null);
+      setVencimientoSoat(datoSeleccionado.vencimientoSoat || null);
+      setVencimientoRevision(datoSeleccionado.vencimientoRevision || null);
     }
   }, []);
 
@@ -207,6 +205,7 @@ const ModalVehiculo = ({
             placeholder="Ingrese la fecha de fabricación"
             style={{ width: "100%" }}
             locale={locale}
+            format="DD/MM/YYYY"
             value={fechaFabricacion}
             onChange={(e) => setFechaFabricacion(e)}
           />
@@ -230,6 +229,7 @@ const ModalVehiculo = ({
             placeholder="Ingrese la fecha de vencimiento SOAT"
             style={{ width: "100%" }}
             locale={locale}
+            format="DD/MM/YYYY"
             value={vencimientoSoat}
             onChange={(e) => setVencimientoSoat(e)}
           />
@@ -239,6 +239,7 @@ const ModalVehiculo = ({
             placeholder="Ingrese la fecha de vencimiento de la Revisión"
             style={{ width: "100%" }}
             locale={locale}
+            format="DD/MM/YYYY"
             value={vencimientoRevision}
             onChange={(e) => setVencimientoRevision(e)}
           />
