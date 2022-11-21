@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, Modal, Form, Input, Select } from "antd";
+import { Button, Modal, Form, Input, Select, DatePicker } from "antd";
+import moment from "moment";
+import "moment/locale/es-mx";
+import locale from "antd/es/date-picker/locale/es_ES";
 
 import { format, openNotification } from "../../util/utils";
+import { otrosService, vehiculosService } from "../../services";
+import { Otros } from "../../constants/EndPoints";
 
 const ModalVehiculo = ({
   datoSeleccionado,
@@ -12,78 +17,156 @@ const ModalVehiculo = ({
   traerDatos,
 }) => {
   const [form] = Form.useForm();
-  const [roles, setRoles] = useState([]);
+  const [estado, setEstado] = useState([]);
+  const [loadSave, setLoadSave] = useState(false);
 
-  const onSearch = async (value) => {
+  const [fechaFabricacion, setFechaFabricacion] = useState();
+  const [vencimientoSoat, setVencimientoSoat] = useState();
+  const [vencimientoRevision, setVencimientoRevision] = useState();
+
+  const onSearchEstado = async (value) => {
     try {
-      // const respuesta = await httpClient.get(`auth/roles?limit=10&offset=0&busqueda=${value}`);
-      // console.log("Roles:", respuesta);
-      // setRoles(respuesta.data.body[0]);
+      const arr = [];
+      const respuesta = await otrosService.getAll(
+        Otros.Estado.getAll,
+        10,
+        0,
+        value
+      );
+      respuesta.data.body.forEach((item) => {
+        arr.push({
+          ...item,
+          key: item._id,
+          value: item._id,
+          label: item.descripcion,
+        });
+      });
+      setEstado(arr);
     } catch (error) {
       console.error(error);
     }
   };
 
   const agregar = async () => {
-    const nombre = form.getFieldValue("nombre");
-    const apellido = form.getFieldValue("apellido");
-    const celular = form.getFieldValue("celular");
-    const rolId = form.getFieldValue("rolId");
-    const email = form.getFieldValue("email");
-    const password = form.getFieldValue("password");
+    setLoadSave(true);
+    const placa = form.getFieldValue("placa");
+    const marca = form.getFieldValue("marca");
+    const color = form.getFieldValue("color");
+    const modelo = form.getFieldValue("modelo");
+    const fechaFabricacion = form.getFieldValue("fechaFabricacion");
+    const idEstadoVehiculo = form.getFieldValue("idEstadoVehiculo");
+    const vencimientoSoat = form.getFieldValue("vencimientoSoat");
+    const vencimientoRevision = form.getFieldValue("vencimientoRevision");
+
+    if (
+      !placa ||
+      !fechaFabricacion ||
+      !vencimientoSoat ||
+      !vencimientoRevision ||
+      !idEstadoVehiculo
+    ) {
+      openNotification(
+        "Datos Incompletos",
+        "Complete todos los campos para guardar",
+        "Alerta"
+      );
+      setLoadSave(false);
+      return;
+    }
+
     const data = {
-      nombre: nombre,
-      apellido: apellido,
-      email: email,
-      password: password,
-      rolId: rolId,
-      celular: celular,
+      placa,
+      marca,
+      color,
+      modelo,
+      fechaFabricacion,
+      idEstadoVehiculo:
+        typeof idEstadoVehiculo === "string"
+          ? idEstadoVehiculo
+          : idEstadoVehiculo._id,
+      vencimientoSoat,
+      vencimientoRevision,
     };
 
-    if (tipo === "editar") {
-      setVerModal(false);
-      // const respuesta = await httpClient.put("auth/usuarios/" + datoSeleccionado.id, data);
-
-      // if (respuesta.data.statusCode === 200) {
-      traerDatos({
-        current: 1,
-        pageSize: 5,
-        showSizeChanger: true,
-        pageSizeOptions: [5, 10, 20],
-      });
+    try {
+      if (tipo === "editar") {
+        const respuesta = await vehiculosService.update(
+          datoSeleccionado._id,
+          data
+        );
+        if (respuesta.data.statusCode === 200) {
+          traerDatos({
+            current: 1,
+            pageSize: 5,
+            showSizeChanger: true,
+            pageSizeOptions: [5, 10, 20],
+          });
+          openNotification(
+            "Editado Correctamente",
+            "El Vehículo se editó correctamente",
+            ""
+          );
+          setVerModal(false);
+          setLoadSave(false);
+        } else {
+          openNotification(
+            "Datos Incompletos",
+            "Complete todos los campos para guardar",
+            "Alerta"
+          );
+        }
+      } else {
+        const respuesta = await vehiculosService.create(data);
+        if (respuesta.data.statusCode === 200) {
+          traerDatos({
+            current: 1,
+            pageSize: 5,
+            showSizeChanger: true,
+            pageSizeOptions: [5, 10, 20],
+          });
+          openNotification(
+            "Guardado Correctamente",
+            "El Vehículo se registró correctamente",
+            ""
+          );
+          setVerModal(false);
+          setLoadSave(false);
+        } else {
+          openNotification(
+            "Datos Incompletos",
+            "Complete todos los campos para guardar",
+            "Alerta"
+          );
+        }
+      }
+    } catch (e) {
       openNotification(
-        "Editado Correctamente",
-        "El Usuario se editó correctamente",
-        ""
+        "Error",
+        "Ocurrió un error al guardar: " + e.response.data.message,
+        "Alerta"
       );
-      // } else {
-      //     openNotification("Datos Incompletos", "Complete todos los campos para guardar", "Alerta");
-      // }
-    } else {
-      setVerModal(false);
-      // const respuesta = await httpClient.post("auth/usuarios", data);
-
-      // if (respuesta.data.statusCode === 200) {
-      traerDatos({
-        current: 1,
-        pageSize: 5,
-        showSizeChanger: true,
-        pageSizeOptions: [5, 10, 20],
-      });
-      openNotification(
-        "Guardado Correctamente",
-        "El Usuario se registró correctamente",
-        ""
-      );
-      // } else {
-      //     openNotification("Datos Incompletos", "Complete todos los campos para guardar", "Alerta");
-      // }
+      setLoadSave(false);
+      return;
     }
   };
 
   useEffect(() => {
+    onSearchEstado("");
     if (tipo === "editar") {
-      onSearch(datoSeleccionado.role.nombre);
+      form.setFieldsValue({
+        idEstadoVehiculo: {
+          ...datoSeleccionado.idEstadoVehiculo,
+          key: datoSeleccionado.idEstadoVehiculo._id,
+          value: datoSeleccionado.idEstadoVehiculo._id,
+          label: datoSeleccionado.idEstadoVehiculo.descripcion,
+        },
+        // fechaFabricacion: moment(datoSeleccionado.fechaFabricacion),
+        // vencimientoSoat: moment(datoSeleccionado.vencimientoSoat),
+        // vencimientoRevision: moment(datoSeleccionado.vencimientoRevision),
+      });
+      setFechaFabricacion(datoSeleccionado.fechaFabricacion || null);
+      setVencimientoSoat(datoSeleccionado.vencimientoSoat || null);
+      setVencimientoRevision(datoSeleccionado.vencimientoRevision || null);
     }
   }, []);
 
@@ -91,12 +174,13 @@ const ModalVehiculo = ({
     <Modal
       visible={verModal}
       footer={
-        <Button onClick={agregar} type="primary">
+        <Button onClick={agregar} type="primary" loading={loadSave}>
           {tipo === "editar" ? "Editar" : "Agregar"}
         </Button>
       }
       onCancel={() => setVerModal(false)}
-      title={tipo === "editar" ? "Editar Usuario" : "Agregar Usuario"}
+      title={tipo === "editar" ? "Editar Vehículo" : "Agregar Vehículo"}
+      maskClosable={false}
     >
       <Form
         layout="horizontal"
@@ -104,37 +188,61 @@ const ModalVehiculo = ({
         initialValues={{ ...datoSeleccionado }}
         {...format}
       >
-        <Form.Item label="Nombres" name="nombre" required>
-          <Input type="text" placeholder="Ingrese el nombre" />
+        <Form.Item label="Placa" name="placa" required>
+          <Input type="text" placeholder="Ingrese la placa del vehículo" />
         </Form.Item>
-        <Form.Item label="Apellidos" name="apellido" required>
-          <Input type="text" placeholder="Ingrese los apellidos" />
+        <Form.Item label="Marca" name="marca">
+          <Input type="text" placeholder="Ingrese la marca del vehículo" />
         </Form.Item>
-        <Form.Item label="Celular" name="celular" required>
-          <Input type="number" placeholder="Ingrese los celular" />
+        <Form.Item label="Color" name="color">
+          <Input type="text" placeholder="Ingrese el color del vehículo" />
         </Form.Item>
-        <Form.Item label="Rol" name="rolId" required>
+        <Form.Item label="Modelo" name="modelo">
+          <Input type="text" placeholder="Ingrese el modelo del vehículo" />
+        </Form.Item>
+        <Form.Item label="F. Fabricación" name="fechaFabricacion" required>
+          <DatePicker
+            placeholder="Ingrese la fecha de fabricación"
+            style={{ width: "100%" }}
+            locale={locale}
+            format="DD/MM/YYYY"
+            value={fechaFabricacion}
+            onChange={(e) => setFechaFabricacion(e)}
+          />
+        </Form.Item>
+        <Form.Item label="Estado" name="idEstadoVehiculo" required>
           <Select
             showSearch
-            placeholder="Seleccione el rol"
+            placeholder="Seleccione el estado"
             optionFilterProp="children"
-            // onChange={onChange}
-            onSearch={onSearch}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().includes(input.toLowerCase())
-            }
+            onSearch={onSearchEstado}
           >
-            {roles.length > 0 &&
-              roles.map((rol) => (
-                <Select.Option value={rol.id}>{rol.nombre}</Select.Option>
-              ))}
+            {estado.map((rol) => (
+              <Select.Option key={rol.key} value={rol.value}>
+                {rol.label}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
-        <Form.Item label="Correo electrónico" name="email" required>
-          <Input type="text" placeholder="Ingrese el correo electrónico" />
+        <Form.Item label="F.V. SOAT" name="vencimientoSoat" required>
+          <DatePicker
+            placeholder="Ingrese la fecha de vencimiento SOAT"
+            style={{ width: "100%" }}
+            locale={locale}
+            format="DD/MM/YYYY"
+            value={vencimientoSoat}
+            onChange={(e) => setVencimientoSoat(e)}
+          />
         </Form.Item>
-        <Form.Item label="Contraseña" name="password" required>
-          <Input type="text" placeholder="Ingrese la contraseña" />
+        <Form.Item label="F.V. Revisión" name="vencimientoRevision" required>
+          <DatePicker
+            placeholder="Ingrese la fecha de vencimiento de la Revisión"
+            style={{ width: "100%" }}
+            locale={locale}
+            format="DD/MM/YYYY"
+            value={vencimientoRevision}
+            onChange={(e) => setVencimientoRevision(e)}
+          />
         </Form.Item>
       </Form>
     </Modal>
