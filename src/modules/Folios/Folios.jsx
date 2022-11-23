@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
-
 import { Card, Divider, Modal, Table } from "antd";
+import moment from "moment";
 
 import Boton from "../../components/Boton/Boton";
 
 import { folio } from "../../models/folio";
 import { foliosService } from "../../services";
+import ModalFolios from "./ModalFolios";
+import { openNotification } from "../../util/utils";
 
 const Folios = () => {
   const confirm = Modal.confirm;
@@ -40,7 +41,7 @@ const Folios = () => {
 
   const showDeleteConfirm = (record) => {
     confirm({
-      title: "¿Esta seguro que desea eliminar " + record.nombre + "?",
+      title: "¿Esta seguro que desea eliminar " + record.numeroFolio + "?",
       content: "",
       okText: "Eliminar",
       okType: "danger",
@@ -61,6 +62,35 @@ const Folios = () => {
     const data = respuesta.data.body.map((e, i) => ({
       ...e,
       key: i,
+      idDetalleEntrega: {
+        ...e.idDetalleEntrega,
+        fechaEntrega: moment(e.idDetalleEntrega.fechaEntrega).utc(0),
+        idHorarioVisita: {
+          ...e.idDetalleEntrega.idHorarioVisita,
+          inicioVisita: moment()
+            .hour(
+              e.idDetalleEntrega.idHorarioVisita.inicioVisita
+                .toString()
+                .substring(0, 2)
+            )
+            .minute(
+              e.idDetalleEntrega.idHorarioVisita.inicioVisita
+                .toString()
+                .substring(2, 4)
+            ),
+          finVisita: moment()
+            .hour(
+              e.idDetalleEntrega.idHorarioVisita.finVisita
+                .toString()
+                .substring(0, 2)
+            )
+            .minute(
+              e.idDetalleEntrega.idHorarioVisita.finVisita
+                .toString()
+                .substring(2, 4)
+            ),
+        },
+      },
     }));
     setLoading(false);
     setData([...data]);
@@ -69,14 +99,22 @@ const Folios = () => {
 
   const eliminarData = async (record) => {
     setLoading(true);
-    // const respuesta = await httpClient.delete("auth/usuarios/" + record.id);
-    // if (respuesta.data.statusCode === 200) {
-    // 	traerDatos(paginacion);
-    // 	openNotification("Registro Eliminado", record.nombre + " fue eliminado con exito", "");
-    // 	setLoading(false);
-    // } else {
-    // 	openNotification("Error al Eliminar", "Por favor vuelva a intentarlo", "Alerta");
-    // }
+    const respuesta = await foliosService.delete(record._id);
+    if (respuesta.data.statusCode === 200) {
+      traerDatos(paginacion);
+      openNotification(
+        "Registro Eliminado",
+        record.numeroFolio + " fue eliminado con exito",
+        ""
+      );
+      setLoading(false);
+    } else {
+      openNotification(
+        "Error al Eliminar",
+        "Por favor vuelva a intentarlo",
+        "Alerta"
+      );
+    }
   };
 
   const columns = [
@@ -105,9 +143,7 @@ const Folios = () => {
       dataIndex: ["idDetalleEntrega", "fechaEntrega"],
       key: "fechaEntrega",
       render: (text) => {
-        return (
-          <span>{text ? moment(text).format("DD/MM/YY") : "Sin fecha"}</span>
-        );
+        return <span>{text ? text.format("DD/MM/YYYY") : "Sin fecha"}</span>;
       },
     },
     {
@@ -124,7 +160,6 @@ const Folios = () => {
           {/* <span className="gx-link"> <i onClick={() => console.log('ver')} className="icon icon-view-o" style={{ fontSize: 20 }} /></span>
                     <Divider type="vertical" /> */}
           <span className="gx-link">
-            {" "}
             <i
               onClick={() => editar(record)}
               className="icon icon-edit"
@@ -133,7 +168,6 @@ const Folios = () => {
           </span>
           <Divider type="vertical" />
           <span className="gx-link">
-            {" "}
             <i
               onClick={() => showDeleteConfirm(record)}
               className="icon icon-trash"
@@ -157,13 +191,7 @@ const Folios = () => {
   return (
     <Card
       title="Lista de folios"
-      // extra={
-      // 	<Boton
-      // 		type="primary"
-      // 		onClick={agregar}
-      // 		name="Agregar Folios"
-      // 	/>
-      // }
+      extra={<Boton type="primary" onClick={agregar} name="Agregar Folio" />}
     >
       <Table
         style={{ width: "100%", textAlign: "center" }}
@@ -174,15 +202,15 @@ const Folios = () => {
         pagination={paginacion}
         onChange={handleTableChange}
       />
-      {/* {verModal ? (
-			<ModalUsuarios
-				traerDatos={traerDatos}
-				verModal={verModal}
-				datoSeleccionado={datoSeleccionado}
-				setVerModal={setVerModal}
-				tipo={tipo}
-			/>
-		) : null} */}
+      {verModal ? (
+        <ModalFolios
+          traerDatos={traerDatos}
+          verModal={verModal}
+          datoSeleccionado={datoSeleccionado}
+          setVerModal={setVerModal}
+          tipo={tipo}
+        />
+      ) : null}
     </Card>
   );
 };

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import { Button, Modal, Form, Input, Select, DatePicker } from "antd";
-import moment from "moment";
 import "moment/locale/es-mx";
 import locale from "antd/es/date-picker/locale/es_ES";
 
@@ -160,9 +159,6 @@ const ModalVehiculo = ({
           value: datoSeleccionado.idEstadoVehiculo._id,
           label: datoSeleccionado.idEstadoVehiculo.descripcion,
         },
-        // fechaFabricacion: moment(datoSeleccionado.fechaFabricacion),
-        // vencimientoSoat: moment(datoSeleccionado.vencimientoSoat),
-        // vencimientoRevision: moment(datoSeleccionado.vencimientoRevision),
       });
       setFechaFabricacion(datoSeleccionado.fechaFabricacion || null);
       setVencimientoSoat(datoSeleccionado.vencimientoSoat || null);
