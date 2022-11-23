@@ -64,7 +64,32 @@ const Folios = () => {
       key: i,
       idDetalleEntrega: {
         ...e.idDetalleEntrega,
-        fechaEntrega: moment(e.idDetalleEntrega.fechaEntrega),
+        fechaEntrega: moment(e.idDetalleEntrega.fechaEntrega).utc(0),
+        idHorarioVisita: {
+          ...e.idDetalleEntrega.idHorarioVisita,
+          inicioVisita: moment()
+            .hour(
+              e.idDetalleEntrega.idHorarioVisita.inicioVisita
+                .toString()
+                .substring(0, 2)
+            )
+            .minute(
+              e.idDetalleEntrega.idHorarioVisita.inicioVisita
+                .toString()
+                .substring(2, 4)
+            ),
+          finVisita: moment()
+            .hour(
+              e.idDetalleEntrega.idHorarioVisita.finVisita
+                .toString()
+                .substring(0, 2)
+            )
+            .minute(
+              e.idDetalleEntrega.idHorarioVisita.finVisita
+                .toString()
+                .substring(2, 4)
+            ),
+        },
       },
     }));
     setLoading(false);

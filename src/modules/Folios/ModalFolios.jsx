@@ -10,9 +10,10 @@ import {
 } from "antd";
 import "moment/locale/es-mx";
 import locale from "antd/es/date-picker/locale/es_ES";
+import moment from "moment";
 
 import { openNotification } from "../../util/utils";
-import { vehiculosService } from "../../services";
+import { foliosService } from "../../services";
 
 const ModalFolios = ({
   datoSeleccionado,
@@ -30,104 +31,145 @@ const ModalFolios = ({
   const agregar = async () => {
     setLoadSave(true);
     const dataForm = form.getFieldsValue();
-    console.log(dataForm);
-    // if (
-    //   !placa ||
-    //   !fechaFabricacion ||
-    //   !vencimientoSoat ||
-    //   !vencimientoRevision ||
-    //   !idEstadoVehiculo
-    // ) {
-    //   openNotification(
-    //     "Datos Incompletos",
-    //     "Complete todos los campos para guardar",
-    //     "Alerta"
-    //   );
-    //   setLoadSave(false);
-    //   return;
-    // }
 
-    // const data = {
-    //   placa,
-    //   marca,
-    //   color,
-    //   modelo,
-    //   fechaFabricacion,
-    //   idEstadoVehiculo:
-    //     typeof idEstadoVehiculo === "string"
-    //       ? idEstadoVehiculo
-    //       : idEstadoVehiculo._id,
-    //   vencimientoSoat,
-    //   vencimientoRevision,
-    // };
+    if (
+      !dataForm.descripcionPedido ||
+      !dataForm.direccion ||
+      !dataForm.distrito ||
+      !dataForm.dni ||
+      !dataForm.fechaEntrega ||
+      !dataForm.finVisita ||
+      !dataForm.inicioVisita ||
+      !dataForm.latitud ||
+      !dataForm.localAbastecimiento ||
+      !dataForm.longitud ||
+      !dataForm.nombre ||
+      !dataForm.numeroFolio ||
+      !dataForm.ordenEntrega ||
+      !dataForm.ruta ||
+      !dataForm.telefono
+    ) {
+      openNotification(
+        "Datos Incompletos",
+        "Complete todos los campos para guardar",
+        "Alerta"
+      );
+      setLoadSave(false);
+      return;
+    }
 
-    // try {
-    //   if (tipo === "editar") {
-    //     const respuesta = await vehiculosService.update(
-    //       datoSeleccionado._id,
-    //       data
-    //     );
-    //     if (respuesta.data.statusCode === 200) {
-    //       traerDatos({
-    //         current: 1,
-    //         pageSize: 5,
-    //         showSizeChanger: true,
-    //         pageSizeOptions: [5, 10, 20],
-    //       });
-    //       openNotification(
-    //         "Editado Correctamente",
-    //         "El Vehículo se editó correctamente",
-    //         ""
-    //       );
-    //       setVerModal(false);
-    //       setLoadSave(false);
-    //     } else {
-    //       openNotification(
-    //         "Datos Incompletos",
-    //         "Complete todos los campos para guardar",
-    //         "Alerta"
-    //       );
-    //     }
-    //   } else {
-    //     const respuesta = await vehiculosService.create(data);
-    //     if (respuesta.data.statusCode === 200) {
-    //       traerDatos({
-    //         current: 1,
-    //         pageSize: 5,
-    //         showSizeChanger: true,
-    //         pageSizeOptions: [5, 10, 20],
-    //       });
-    //       openNotification(
-    //         "Guardado Correctamente",
-    //         "El Vehículo se registró correctamente",
-    //         ""
-    //       );
-    //       setVerModal(false);
-    //       setLoadSave(false);
-    //     } else {
-    //       openNotification(
-    //         "Datos Incompletos",
-    //         "Complete todos los campos para guardar",
-    //         "Alerta"
-    //       );
-    //     }
-    //   }
-    // } catch (e) {
-    //   openNotification(
-    //     "Error",
-    //     "Ocurrió un error al guardar: " + e.response.data.message,
-    //     "Alerta"
-    //   );
-    //   setLoadSave(false);
-    //   return;
-    // }
+    const inicioVisita = dataForm.inicioVisita.format("HH:mm").split(":");
+    const finVisita = dataForm.finVisita.format("HH:mm").split(":");
+    const data = {
+      numeroFolio: dataForm.numeroFolio,
+      ruta: dataForm.ruta,
+      idDetalleCliente: {
+        nombre: dataForm.nombre,
+        dni: dataForm.dni,
+        telefono: dataForm.telefono,
+        direccion: dataForm.direccion,
+      },
+      idDetalleEntrega: {
+        fechaEntrega: dataForm.fechaEntrega.toISOString(),
+        idUbicacionEntrega: {
+          latitud: dataForm.latitud,
+          longitud: dataForm.longitud,
+          distrito: dataForm.distrito,
+        },
+        ordenEntrega: parseInt(dataForm.ordenEntrega, 10),
+        idHorarioVisita: {
+          inicioVisita: parseInt(inicioVisita[0] + inicioVisita[1], 10),
+          finVisita: parseInt(finVisita[0] + finVisita[1], 10),
+        },
+      },
+      idDetallePedido: {
+        descripcionPedido: dataForm.descripcionPedido,
+      },
+      idLocalAbastecimiento: {
+        localAbastecimiento: dataForm.localAbastecimiento,
+      },
+    };
+
+    try {
+      if (tipo === "editar") {
+        const respuesta = await foliosService.update(
+          datoSeleccionado._id,
+          data
+        );
+        if (respuesta.data.statusCode === 200) {
+          traerDatos({
+            current: 1,
+            pageSize: 5,
+            showSizeChanger: true,
+            pageSizeOptions: [5, 10, 20],
+          });
+          openNotification(
+            "Editado Correctamente",
+            "El Folio se editó correctamente",
+            ""
+          );
+          setVerModal(false);
+          setLoadSave(false);
+        } else {
+          openNotification(
+            "Datos Incompletos",
+            "Complete todos los campos para guardar",
+            "Alerta"
+          );
+        }
+      } else {
+        const respuesta = await foliosService.create(data);
+        if (respuesta.data.statusCode === 200) {
+          traerDatos({
+            current: 1,
+            pageSize: 5,
+            showSizeChanger: true,
+            pageSizeOptions: [5, 10, 20],
+          });
+          openNotification(
+            "Guardado Correctamente",
+            "El Folio se registró correctamente",
+            ""
+          );
+          setVerModal(false);
+          setLoadSave(false);
+        } else {
+          openNotification(
+            "Datos Incompletos",
+            "Complete todos los campos para guardar",
+            "Alerta"
+          );
+        }
+      }
+    } catch (e) {
+      openNotification(
+        "Error",
+        "Ocurrió un error al guardar: " + e.response.data.message,
+        "Alerta"
+      );
+      setLoadSave(false);
+      return;
+    }
   };
 
   useEffect(() => {
     if (tipo === "editar") {
       setFechaEntrega(datoSeleccionado.idDetalleEntrega.fechaEntrega || null);
-      // setHoraInicio(datoSeleccionado.idDetalleEntrega.idHorarioVisita.inicioVisita || null);
-      // setHoraFinal(datoSeleccionado.idDetalleEntrega.idHorarioVisita.finVisita || null);
+      setHoraInicio(
+        datoSeleccionado.idDetalleEntrega.idHorarioVisita.inicioVisita || null
+      );
+      setHoraFinal(
+        datoSeleccionado.idDetalleEntrega.idHorarioVisita.finVisita || null
+      );
+      form.setFieldsValue({
+        ...datoSeleccionado,
+        ...datoSeleccionado.idDetalleCliente,
+        ...datoSeleccionado.idDetalleEntrega,
+        ...datoSeleccionado.idDetalleEntrega.idHorarioVisita,
+        ...datoSeleccionado.idDetalleEntrega.idUbicacionEntrega,
+        ...datoSeleccionado.idDetallePedido,
+        ...datoSeleccionado.idLocalAbastecimiento,
+      });
     }
   }, []);
 
