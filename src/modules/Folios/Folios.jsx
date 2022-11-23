@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Card, Divider, Modal, Table } from "antd";
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Card, Divider, Input, Modal, Space, Table } from "antd";
 import moment from "moment";
 
 import Boton from "../../components/Boton/Boton";
@@ -8,8 +8,13 @@ import { folio } from "../../models/folio";
 import { foliosService } from "../../services";
 import ModalFolios from "./ModalFolios";
 import { openNotification } from "../../util/utils";
+import { SearchOutlined } from "@ant-design/icons";
 
 const Folios = () => {
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+
   const confirm = Modal.confirm;
   const [verModal, setVerModal] = useState(false);
   const [datoSeleccionado, setDatoSeleccionado] = useState(folio);
@@ -117,21 +122,105 @@ const Folios = () => {
     }
   };
 
+  const handleSearch = (selectedKeys, confirm, dataIndex, clearFilters) => {
+    handleReset(clearFilters);
+    confirm();
+    console.log(selectedKeys);
+    console.log(dataIndex);
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Buscar ${dataIndex.toUpperCase()}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() =>
+            handleSearch(selectedKeys, confirm, dataIndex, clearFilters)
+          }
+          style={{
+            marginBottom: 8,
+            display: "block",
+          }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() =>
+              handleSearch(selectedKeys, confirm, dataIndex, clearFilters)
+            }
+            icon={<SearchOutlined />}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Buscar
+          </Button>
+          <Button
+            onClick={() => {
+              if (clearFilters) handleReset(clearFilters);
+              close();
+            }}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Limpiar
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? "#1890ff" : undefined,
+        }}
+      />
+    ),
+  });
+
   const columns = [
     {
       title: "#Folio",
       dataIndex: "numeroFolio",
       key: "numeroFolio",
+      ...getColumnSearchProps("numeroFolio"),
     },
     {
       title: "DNI",
       dataIndex: ["idDetalleCliente", "dni"],
       key: "dni",
+      ...getColumnSearchProps("dni"),
     },
     {
       title: "Teléfono",
       dataIndex: ["idDetalleCliente", "telefono"],
       key: "telefono",
+      ...getColumnSearchProps("telefono"),
     },
     {
       title: "Dirección",
@@ -145,6 +234,7 @@ const Folios = () => {
       render: (text) => {
         return <span>{text ? text.format("DD/MM/YYYY") : "Sin fecha"}</span>;
       },
+      ...getColumnSearchProps("fechaEntrega"),
     },
     {
       title: "Pedido",
