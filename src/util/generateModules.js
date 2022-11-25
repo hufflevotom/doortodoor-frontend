@@ -62,8 +62,15 @@ export const generateModules = (token, tipo, match, navStyle) => {
               key={a.key}
               popupClassName={match(navStyle)}
               title={
-                <span>
-                  <i className={"icon " + a.icono} />
+                <span
+                  style={{
+                    display: "flex",
+                    flexDirecction: "row",
+                    alignItems: "center",
+                    justifyContent: "start",
+                  }}
+                >
+                  {a.icono}
                   <span>{a.descripcion}</span>
                 </span>
               }
@@ -71,8 +78,16 @@ export const generateModules = (token, tipo, match, navStyle) => {
               {a.hijos &&
                 a.hijos.map((e) => (
                   <Menu.Item key={e.key}>
-                    <Link to={"/" + e.ruta}>
-                      <i className={"icon " + e.icono} />
+                    <Link
+                      to={"/" + e.ruta}
+                      style={{
+                        display: "flex",
+                        flexDirecction: "row",
+                        alignItems: "center",
+                        justifyContent: "start",
+                      }}
+                    >
+                      {a.icono}
                       <span>{e.descripcion}</span>
                     </Link>
                   </Menu.Item>
@@ -83,8 +98,16 @@ export const generateModules = (token, tipo, match, navStyle) => {
           // No contienen hijos
           items.push(
             <Menu.Item key={a.key}>
-              <Link to={"/" + a.ruta}>
-                <i className={"icon " + a.icono} />
+              <Link
+                to={"/" + a.ruta}
+                style={{
+                  display: "flex",
+                  flexDirecction: "row",
+                  alignItems: "center",
+                  justifyContent: "start",
+                }}
+              >
+                {a.icono}
                 <span>{a.descripcion}</span>
               </Link>
             </Menu.Item>

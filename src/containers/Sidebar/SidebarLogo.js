@@ -46,17 +46,21 @@ const SidebarLogo = ({ sidebarCollapsed, setSidebarCollapsed }) => {
         {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR && width >= TAB_SIZE ? (
           <img alt="lo" src={"/assets/images/w-logo.png"} />
         ) : themeType === THEME_TYPE_LITE ? (
-          <img
-            alt="logo1"
-            src={"/assets/images/logo-white.png"}
-            style={{ width: "80%" }}
-          />
+          !sidebarCollapsed && (
+            <img
+              alt="logo1"
+              src={"/assets/images/logo-white.png"}
+              style={{ width: "80%" }}
+            />
+          )
         ) : (
-          <img
-            alt="logo2"
-            src={"/assets/images/logo-white.png"}
-            style={{ width: "80%" }}
-          />
+          !sidebarCollapsed && (
+            <img
+              alt="logo2"
+              src={"/assets/images/logo-white.png"}
+              style={{ width: "80%" }}
+            />
+          )
         )}
       </Link>
     </div>

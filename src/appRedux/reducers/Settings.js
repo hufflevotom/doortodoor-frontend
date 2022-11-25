@@ -23,7 +23,8 @@ const initialSettings = {
     name: "English",
     icon: "us",
   },
-  initURL: "/Inicio",
+  // initURL: "/Inicio",
+  initURL: "",
 };
 
 const SettingsReducer = (state = initialSettings, action) => {

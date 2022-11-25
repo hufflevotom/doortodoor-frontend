@@ -4,13 +4,24 @@
 !  - La ruta debe respetar los nombres y orden de las carpetas
 */
 
+import {
+  CarOutlined,
+  CompassOutlined,
+  DashboardOutlined,
+  FileImageOutlined,
+  SearchOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
+
+const estilo = { fontSize: "20px" };
+
 export const Modulos = [
   {
     key: "1-inicio",
     modulo: "inicio",
     ruta: "Inicio",
     descripcion: "Inicio",
-    icono: "icon-dasbhoard",
+    icono: <DashboardOutlined style={estilo} />,
     subMenu: false,
   },
   {
@@ -18,7 +29,7 @@ export const Modulos = [
     modulo: "monitoreo",
     ruta: "Monitoreo",
     descripcion: "Monitoreo",
-    icono: "icon-dasbhoard",
+    icono: <SearchOutlined style={estilo} />,
     subMenu: false,
   },
   {
@@ -26,7 +37,7 @@ export const Modulos = [
     modulo: "evidencias",
     ruta: "Evidencias",
     descripcion: "Evidencias",
-    icono: "icon-dasbhoard",
+    icono: <FileImageOutlined style={estilo} />,
     subMenu: false,
   },
   {
@@ -34,7 +45,7 @@ export const Modulos = [
     modulo: "folios",
     ruta: "Folios",
     descripcion: "Folios",
-    icono: "icon-dasbhoard",
+    icono: <CompassOutlined style={estilo} />,
     subMenu: false,
   },
   {
@@ -42,7 +53,7 @@ export const Modulos = [
     modulo: "usuarios",
     ruta: "Usuarios",
     descripcion: "Usuarios",
-    icono: "icon-dasbhoard",
+    icono: <UserOutlined style={estilo} />,
     subMenu: false,
   },
   {
@@ -50,7 +61,7 @@ export const Modulos = [
     modulo: "vehiculos",
     ruta: "Vehiculos",
     descripcion: "Vehiculos",
-    icono: "icon-dasbhoard",
+    icono: <CarOutlined style={estilo} />,
     subMenu: false,
   },
   //   {
