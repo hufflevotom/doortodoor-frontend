@@ -6,7 +6,8 @@ export const pathPublic = process.env.REACT_APP_PUBLIC_PATH_URL;
 //! Endpoints
 //* Módulo de usuarios
 export const Usuarios = {
-  login: backend + "auth/usuarios/login",
+  login: backend + "auth/login",
+  getToken: backend + "auth/login/token",
   getAll: backend + "auth/usuarios",
   create: backend + "auth/usuarios",
   getOne: backend + "auth/usuarios/",

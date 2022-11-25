@@ -27,6 +27,11 @@ const login = async (data) => {
   return response;
 };
 
+const getToken = async (token) => {
+  const response = await httpClient.get(Usuarios.getToken + "?token=" + token);
+  return response;
+};
+
 const update = async (id, body) => {
   const response = await httpClient.put(Usuarios.update + id, body);
   return response;
@@ -42,6 +47,7 @@ export const usuariosService = {
   create,
   getOne,
   login,
+  getToken,
   update,
   delete: _delete,
 };
