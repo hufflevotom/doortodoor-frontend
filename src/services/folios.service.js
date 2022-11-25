@@ -1,10 +1,12 @@
 import { Folios } from "../constants/EndPoints";
 import { httpClient } from "../util/Api";
 
-const getAll = async (limit, offset, busqueda = "") => {
+const getAll = async (limit, offset, busqueda = "", criterio) => {
   const response = await httpClient.get(
     `${Folios.getAll}?limit=${limit}&offset=${offset}${
-      busqueda && busqueda !== "" ? `&busqueda=${busqueda}` : ""
+      busqueda && criterio && busqueda !== "" && criterio !== ""
+        ? `&criterio=${criterio}&busqueda=${busqueda}`
+        : ""
     }`
   );
   return response;

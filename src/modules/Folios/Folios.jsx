@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Card, Divider, Input, Modal, Space, Table } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import Boton from "../../components/Boton/Boton";
+import { openNotification } from "../../util/utils";
 
 import { folio } from "../../models/folio";
 import { foliosService } from "../../services";
+
 import ModalFolios from "./ModalFolios";
-import { openNotification } from "../../util/utils";
-import { SearchOutlined } from "@ant-design/icons";
 
 const Folios = () => {
   const [searchText, setSearchText] = useState("");
@@ -58,12 +59,17 @@ const Folios = () => {
     });
   };
 
-  const traerDatos = async (pagination) => {
+  const traerDatos = async (pagination, searchCriteria, searchText) => {
     setLoading(true);
     const limit = pagination.pageSize;
     const offset =
       pagination.current * pagination.pageSize - pagination.pageSize;
-    const respuesta = await foliosService.getAll(limit, offset, "");
+    const respuesta = await foliosService.getAll(
+      limit,
+      offset,
+      searchText,
+      searchCriteria
+    );
     const data = respuesta.data.body.map((e, i) => ({
       ...e,
       key: i,
@@ -125,8 +131,6 @@ const Folios = () => {
   const handleSearch = (selectedKeys, confirm, dataIndex, clearFilters) => {
     handleReset(clearFilters);
     confirm();
-    console.log(selectedKeys);
-    console.log(dataIndex);
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
@@ -134,6 +138,7 @@ const Folios = () => {
   const handleReset = (clearFilters) => {
     clearFilters();
     setSearchText("");
+    setSearchedColumn("");
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -153,7 +158,7 @@ const Folios = () => {
         <Input
           ref={searchInput}
           placeholder={`Buscar ${dataIndex.toUpperCase()}`}
-          value={selectedKeys[0]}
+          value={dataIndex === searchedColumn ? searchText : selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
@@ -197,7 +202,7 @@ const Folios = () => {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          color: filtered ? "#1890ff" : undefined,
+          color: dataIndex === searchedColumn ? "#1890ff" : undefined,
         }}
       />
     ),
@@ -271,12 +276,16 @@ const Folios = () => {
 
   const handleTableChange = (pagination) => {
     setPaginacion(pagination);
-    traerDatos(pagination);
+    traerDatos(pagination, searchedColumn, searchText);
   };
 
   useEffect(() => {
-    traerDatos(paginacion);
+    traerDatos(paginacion, searchedColumn, searchText);
   }, []);
+
+  useEffect(() => {
+    traerDatos(paginacion, searchedColumn, searchText);
+  }, [searchText, searchedColumn]);
 
   return (
     <Card
