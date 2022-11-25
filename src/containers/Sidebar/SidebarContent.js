@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Menu } from "antd";
 
 import CustomScrollbars from "util/CustomScrollbars";
@@ -11,8 +11,10 @@ import { useSelector } from "react-redux";
 import { generateModules } from "../../util/generateModules";
 import { globalVariables } from "../../global.style";
 import { CloudUploadOutlined } from "@ant-design/icons";
+import CargaMasiva from "../../modules/CargaMasiva/CargaMasiva";
 
 const SidebarContent = ({ sidebarCollapsed, setSidebarCollapsed }) => {
+  const [verModalCargaMasiva, setVerModalCargaMasiva] = useState(false);
   const { navStyle, themeType } = useSelector(({ settings }) => settings);
   const pathname = useSelector(({ common }) => common.pathname);
 
@@ -61,8 +63,9 @@ const SidebarContent = ({ sidebarCollapsed, setSidebarCollapsed }) => {
                 border: "none",
               }}
               type="ghost"
-              // TODO: Mostrar pagina de carga masiva de folios
-              onClick={() => {}}
+              onClick={() => {
+                setVerModalCargaMasiva(true);
+              }}
             >
               {sidebarCollapsed ? (
                 <CloudUploadOutlined
@@ -83,6 +86,12 @@ const SidebarContent = ({ sidebarCollapsed, setSidebarCollapsed }) => {
           </Menu>
         </CustomScrollbars>
       </div>
+      {verModalCargaMasiva ? (
+        <CargaMasiva
+          setVerModal={setVerModalCargaMasiva}
+          verModal={verModalCargaMasiva}
+        />
+      ) : null}
     </>
   );
 };
