@@ -64,7 +64,8 @@
     "rheostat": "^4.1.1",
     "slick-carousel": "^1.8.1",
     "url-search-params": "^1.1.0",
-    "victory": "^35.4.6"
+    "victory": "^35.4.6",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-app-rewired start",

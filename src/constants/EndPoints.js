@@ -32,7 +32,7 @@ export const Folios = {
   update: backend + "document/folios/",
   delete: backend + "document/folios/",
   getActuales: backend + "document/folios/obtenerFolios",
-  cargarFolios: backend + "document/folios/cargarFolios",
+  cargarFolios: backend + "document/folios/insertMany",
 };
 
 //* Módulo de evidencias

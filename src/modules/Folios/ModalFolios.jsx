@@ -10,7 +10,6 @@ import {
 } from "antd";
 import "moment/locale/es-mx";
 import locale from "antd/es/date-picker/locale/es_ES";
-import moment from "moment";
 
 import { openNotification } from "../../util/utils";
 import { foliosService } from "../../services";

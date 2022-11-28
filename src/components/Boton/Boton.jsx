@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "antd";
 import { globalVariables } from "../../global.style";
 
-const Boton = ({ name, onClick, style, type = "primary" }) => {
+const Boton = ({ name, onClick, style, type = "primary", loader }) => {
   let estilo = { margin: 0, fontSize: "14px" };
   switch (type) {
     case "submit":
@@ -16,6 +16,10 @@ const Boton = ({ name, onClick, style, type = "primary" }) => {
       break;
     case "secondary":
       estilo.backgroundColor = globalVariables.color.primary["100"];
+      estilo.color = globalVariables.color.blanco;
+      break;
+    case "success":
+      estilo.backgroundColor = globalVariables.color.verde["100"];
       estilo.color = globalVariables.color.blanco;
       break;
   }
@@ -38,7 +42,7 @@ const Boton = ({ name, onClick, style, type = "primary" }) => {
     );
   }
   return (
-    <Button onClick={onClick} style={{ ...estilo, ...style }}>
+    <Button onClick={onClick} style={{ ...estilo, ...style }} loading={loader}>
       {name}
     </Button>
   );
