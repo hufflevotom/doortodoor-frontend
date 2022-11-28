@@ -2,39 +2,39 @@ import { Folios } from "../constants/EndPoints";
 import { httpClient } from "../util/Api";
 
 const getAll = async (limit, offset, busqueda = "", criterio) => {
-  const response = await httpClient.get(
+  return await httpClient.get(
     `${Folios.getAll}?limit=${limit}&offset=${offset}${
       busqueda && criterio && busqueda !== "" && criterio !== ""
         ? `&criterio=${criterio}&busqueda=${busqueda}`
         : ""
     }`
   );
-  return response;
 };
 
 const create = async (body) => {
-  const response = await httpClient.post(Folios.create, body);
-  return response;
+  return await httpClient.post(Folios.create, body);
+};
+
+const cargarFolios = async (body) => {
+  return httpClient.post(Folios.cargarFolios, JSON.parse(body));
 };
 
 const getOne = async (id) => {
-  const response = await httpClient.get(Folios.getOne + id);
-  return response;
+  return await httpClient.get(Folios.getOne + id);
 };
 
 const update = async (id, body) => {
-  const response = await httpClient.put(Folios.update + id, body);
-  return response;
+  return await httpClient.put(Folios.update + id, body);
 };
 
 const _delete = async (id) => {
-  const response = await httpClient.delete(Folios.delete + id);
-  return response;
+  return await httpClient.delete(Folios.delete + id);
 };
 
 export const foliosService = {
   getAll,
   create,
+  cargarFolios,
   getOne,
   update,
   delete: _delete,
