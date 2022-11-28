@@ -7,12 +7,13 @@ export const pathPublic = process.env.REACT_APP_PUBLIC_PATH_URL;
 //* Módulo de usuarios
 export const Usuarios = {
   login: backend + "auth/login",
-  getToken: backend + "auth/login/token",
   getAll: backend + "auth/usuarios",
   create: backend + "auth/usuarios",
   getOne: backend + "auth/usuarios/",
   update: backend + "auth/usuarios/",
   delete: backend + "auth/usuarios/",
+  getToken: backend + "auth/login/token",
+  getRepartidores: backend + "auth/usuarios/repartidores",
 };
 
 //* Módulo de vehiculos
@@ -31,6 +32,7 @@ export const Folios = {
   getOne: backend + "document/folios/",
   update: backend + "document/folios/",
   delete: backend + "document/folios/",
+  getRutas: backend + "document/folios/rutas",
   getActuales: backend + "document/folios/obtenerFolios",
   cargarFolios: backend + "document/folios/insertMany",
 };
