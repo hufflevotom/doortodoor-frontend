@@ -62,4 +62,12 @@ export const Otros = {
     update: backend + "transport/estadoVehiculo/",
     delete: backend + "transport/estadoVehiculo/",
   },
+  Responsables: {
+    getAll: backend + "transport/responsables",
+    create: backend + "transport/responsables",
+    getOne: backend + "transport/responsables/",
+    update: backend + "transport/responsables/",
+    delete: backend + "transport/responsables/",
+    insertMany: backend + "transport/responsables/insertMany",
+  },
 };

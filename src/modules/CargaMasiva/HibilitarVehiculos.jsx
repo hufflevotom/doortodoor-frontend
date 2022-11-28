@@ -14,6 +14,7 @@ import {
   foliosService,
   vehiculosService,
   usuariosService,
+  responsablesService,
 } from "../../services";
 
 const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
@@ -28,7 +29,7 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
     const response = await foliosService.getRutas();
     if (response.data.statusCode === 200) {
       form.setFieldsValue({
-        vehiculos: response.data.body.map((b, i) => ({ key: i, ruta: b })),
+        responsables: response.data.body.map((b, i) => ({ key: i, ruta: b })),
       });
       setRutas(response.data.body.map((b, i) => ({ key: b, id: b })));
       setLoader(false);
@@ -55,16 +56,17 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
 
   const habilitarVehiculos = async () => {
     setLoader(true);
-    const body = form.getFieldsValue();
-    // TODO: endpoint para habilitar vehiculos
-    // const response = await usuariosService.getRepartidores();
-    // if (response.data.statusCode === 200) {
-    // setVerModal(false);
-    // setVerModalCarga(false);
-    // TODO: modal success
-    console.log(body);
-    setLoader(false);
-    // }
+    const data = form.getFieldsValue();
+    const body = {
+      responsables: data.responsables,
+    };
+    const response = await responsablesService.insertMany(body);
+    if (response.data.statusCode === 200) {
+      setVerModal(false);
+      setVerModalCarga(false);
+      // TODO: modal success
+      setLoader(false);
+    }
   };
 
   useEffect(() => {
@@ -122,7 +124,7 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
               justifyContent: "left",
             }}
           >
-            <Form.List name="vehiculos">
+            <Form.List name="responsables">
               {(fields, { add, remove }) => (
                 <>
                   {fields.map((field, index) => (
@@ -156,8 +158,8 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
                       </Form.Item>
                       <Form.Item
                         {...field}
-                        name={[field.name, "vehiculo"]}
-                        fieldKey={[field.fieldKey, "vehiculo"]}
+                        name={[field.name, "idVehiculo"]}
+                        fieldKey={[field.fieldKey, "idVehiculo"]}
                         rules={[
                           { required: true, message: "Selecciona un vehículo" },
                         ]}
@@ -179,8 +181,8 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
                       </Form.Item>
                       <Form.Item
                         {...field}
-                        name={[field.name, "repartidor"]}
-                        fieldKey={[field.fieldKey, "repartidor"]}
+                        name={[field.name, "idUsuario"]}
+                        fieldKey={[field.fieldKey, "idUsuario"]}
                         rules={[
                           {
                             required: true,
