@@ -1,5 +1,5 @@
 import { Form, Image, Input, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 // * Styles
 import { globalVariables } from "../../global.style";
@@ -8,14 +8,35 @@ import "./index.css";
 import UploadFile from "../../assets/images/uploadFile.svg";
 // * Components
 import Boton from "../../components/Boton/Boton";
+import { openNotification } from "../../util/utils";
+import HabilitarVehiculos from "./HibilitarVehiculos";
 // * Services
 import { foliosService } from "../../services/folios.service";
-import { openNotification } from "../../util/utils";
 
 const CargaMasiva = ({ verModal, setVerModal }) => {
   const [form] = Form.useForm();
   const [loader, setLoader] = useState(false);
   const [dataString, setDataString] = useState("");
+  const [visibleHabilitarVehiculos, setVisibleHabilitarVehiculos] =
+    useState(false);
+
+  const validarEstadoCarga = async () => {
+    setLoader(true);
+    const response = await foliosService.validarEstadoCarga();
+    if (response.data.statusCode === 200) {
+      if (response.data.body === 1) {
+        setVisibleHabilitarVehiculos(true);
+      } else if (response.data.body === 2) {
+        setVerModal(false);
+        openNotification(
+          "Error",
+          "Ya se ha registrado la carga de folios para mañana.",
+          "Alerta"
+        );
+      }
+      setLoader(false);
+    }
+  };
 
   const cargarArchivo = (ev) => {
     setLoader(true);
@@ -23,26 +44,18 @@ const CargaMasiva = ({ verModal, setVerModal }) => {
     let jsonData;
     const reader = new FileReader();
     const file = ev.target.files[0];
-    console.log(reader);
-    console.log(file);
     reader.onload = (event) => {
       const data = reader.result;
-      console.log(data);
       workBook = XLSX.read(data, { type: "binary" });
-      console.log(workBook);
       jsonData = workBook.SheetNames.reduce((initial, name) => {
         const sheet = workBook.Sheets[name];
-        console.log(sheet);
         initial = { name: XLSX.utils.sheet_to_json(sheet) };
-        console.log(initial);
         return initial;
       }, {});
-      console.log(jsonData);
       setDataString(JSON.stringify(jsonData));
       setLoader(false);
     };
     reader.readAsBinaryString(file);
-    console.log(file);
   };
 
   const subirArchivo = async () => {
@@ -53,13 +66,15 @@ const CargaMasiva = ({ verModal, setVerModal }) => {
       return;
     }
     const response = await foliosService.cargarFolios(dataString);
-    console.log(response);
     if (response.data.statusCode === 200) {
-      // TODO: Abrir el componente para habilitar vehículos
-      // this.router.navigate(["./validar-folios"]);
+      setVisibleHabilitarVehiculos(true);
       setLoader(false);
     }
   };
+
+  useEffect(() => {
+    validarEstadoCarga();
+  }, []);
 
   return (
     <Modal
@@ -142,6 +157,11 @@ const CargaMasiva = ({ verModal, setVerModal }) => {
           </div>
         </div>
       </div>
+      <HabilitarVehiculos
+        verModal={visibleHabilitarVehiculos}
+        setVerModal={setVisibleHabilitarVehiculos}
+        setVerModalCarga={setVerModal}
+      />
     </Modal>
   );
 };

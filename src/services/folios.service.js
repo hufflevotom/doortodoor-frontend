@@ -23,6 +23,14 @@ const getOne = async (id) => {
   return await httpClient.get(Folios.getOne + id);
 };
 
+const getRutas = async () => {
+  return await httpClient.get(Folios.getRutas);
+};
+
+const validarEstadoCarga = async () => {
+  return await httpClient.get(Folios.validarEstadoCarga);
+};
+
 const update = async (id, body) => {
   return await httpClient.put(Folios.update + id, body);
 };
@@ -36,6 +44,8 @@ export const foliosService = {
   create,
   cargarFolios,
   getOne,
+  getRutas,
+  validarEstadoCarga,
   update,
   delete: _delete,
 };
