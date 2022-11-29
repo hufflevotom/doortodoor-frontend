@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Image, Modal, Select } from "antd";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Form, Image, Modal, Select } from "antd";
 // * Styles
 import { globalVariables } from "../../global.style";
 import "./index.css";
@@ -16,10 +15,12 @@ import {
   usuariosService,
   responsablesService,
 } from "../../services";
+import ModalResult from "./ModalResult";
 
 const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
   const [form] = Form.useForm();
   const [loader, setLoader] = useState(false);
+  const [verResult, setVerResult] = useState(false);
   const [rutas, setRutas] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const [repartidores, setRepartidores] = useState([]);
@@ -57,22 +58,39 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
   const habilitarVehiculos = async () => {
     setLoader(true);
     const data = form.getFieldsValue();
+    data.responsables.forEach((r) => {
+      if (!r.idVehiculo || !r.idRepartidor) {
+        openNotification(
+          "Error",
+          "Seleccione todos los campos para las rutas",
+          "Alerta"
+        );
+        setLoader(false);
+        return;
+      }
+    });
     const body = {
       responsables: data.responsables,
     };
     const response = await responsablesService.insertMany(body);
     if (response.data.statusCode === 200) {
-      setVerModal(false);
-      setVerModalCarga(false);
-      // TODO: modal success
       setLoader(false);
+      setVerResult(true);
     }
   };
 
+  const cerrarResult = () => {
+    setVerResult(false);
+    setVerModal(false);
+    setVerModalCarga(false);
+  };
+
   useEffect(() => {
-    obtenerRutas();
-    obtenerVehiculos();
-    obtenerRepartidores();
+    if (verModal) {
+      obtenerRutas();
+      obtenerVehiculos();
+      obtenerRepartidores();
+    }
   }, [verModal]);
 
   return (
@@ -234,6 +252,7 @@ const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
           />
         </div>
       </div>
+      <ModalResult evClick={cerrarResult} show={verResult} />
     </Modal>
   );
 };

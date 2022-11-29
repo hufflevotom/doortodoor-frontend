@@ -18,7 +18,7 @@ const CargaMasiva = ({ verModal, setVerModal }) => {
   const [loader, setLoader] = useState(false);
   const [dataString, setDataString] = useState("");
   const [visibleHabilitarVehiculos, setVisibleHabilitarVehiculos] =
-    useState(true);
+    useState(false);
 
   const cargarArchivo = (ev) => {
     setLoader(true);
