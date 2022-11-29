@@ -33,8 +33,9 @@ export const Folios = {
   update: backend + "document/folios/",
   delete: backend + "document/folios/",
   getRutas: backend + "document/folios/rutas",
-  getActuales: backend + "document/folios/obtenerFolios",
   cargarFolios: backend + "document/folios/insertMany",
+  getActuales: backend + "document/folios/obtenerFolios",
+  validarEstadoCarga: backend + "document/folios/validarEstadoCarga",
 };
 
 //* Módulo de evidencias

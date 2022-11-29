@@ -1,5 +1,5 @@
 import { Form, Image, Input, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 // * Styles
 import { globalVariables } from "../../global.style";
@@ -19,6 +19,24 @@ const CargaMasiva = ({ verModal, setVerModal }) => {
   const [dataString, setDataString] = useState("");
   const [visibleHabilitarVehiculos, setVisibleHabilitarVehiculos] =
     useState(false);
+
+  const validarEstadoCarga = async () => {
+    setLoader(true);
+    const response = await foliosService.validarEstadoCarga();
+    if (response.data.statusCode === 200) {
+      if (response.data.body === 1) {
+        setVisibleHabilitarVehiculos(true);
+      } else if (response.data.body === 2) {
+        setVerModal(false);
+        openNotification(
+          "Error",
+          "Ya se ha registrado la carga de folios para mañana.",
+          "Alerta"
+        );
+      }
+      setLoader(false);
+    }
+  };
 
   const cargarArchivo = (ev) => {
     setLoader(true);
@@ -53,6 +71,10 @@ const CargaMasiva = ({ verModal, setVerModal }) => {
       setLoader(false);
     }
   };
+
+  useEffect(() => {
+    validarEstadoCarga();
+  }, []);
 
   return (
     <Modal
