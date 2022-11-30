@@ -28,14 +28,17 @@ export const useProvideAuth = () => {
     usuariosService
       .login(user)
       .then(({ data }) => {
-        if (data.access_token) {
+        if (
+          data.access_token &&
+          data.user.idTipoRol !== "60bb0fad68bcb70590c9eccd"
+        ) {
           fetchSuccess();
           httpClient.defaults.headers.common["Authorization"] =
             "Bearer " + data.access_token;
           localStorage.setItem(
             "token",
             JSON.stringify({
-              ...data.user._doc,
+              ...data.user,
               token: data.access_token,
               modulos: [
                 "inicio",
@@ -49,6 +52,8 @@ export const useProvideAuth = () => {
           );
           getAuthUser();
           if (callbackFun) callbackFun();
+        } else {
+          fetchError("No tiene permisos para acceder a esta aplicación");
         }
       })
       .catch(function (error) {

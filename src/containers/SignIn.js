@@ -93,7 +93,7 @@ const SignIn = () => {
             />
           </Form.Item>
           <span className="gx-text-light gx-fs-sm">
-            DNI: 73869994 / Contraseña: P1980sl.
+            DNI: 71481899 / Contraseña: P1980sl.
           </span>
         </Form>
         <AppNotificationContainer loading={isLoading} error={error} />
