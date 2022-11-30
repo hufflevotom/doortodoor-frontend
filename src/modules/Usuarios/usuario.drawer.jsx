@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Drawer, Row, Col, Divider } from "antd";
+import { Drawer, Row, Col } from "antd";
 import { SmileTwoTone } from "@ant-design/icons";
 
 const SectionTitleItem = ({ children }) => (
@@ -15,7 +15,6 @@ const DescriptionItem = ({ title, content }) => (
 );
 
 const InfoUsuario = ({ data, show, setShow }) => {
-  console.log(data);
   return (
     <Drawer
       width={1000}
