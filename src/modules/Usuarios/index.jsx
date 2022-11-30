@@ -1,1 +1,1 @@
-export { default } from './Usuarios';
+export { default } from "./usuario.table";

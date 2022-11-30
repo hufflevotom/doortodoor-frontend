@@ -7,12 +7,13 @@ export const pathPublic = process.env.REACT_APP_PUBLIC_PATH_URL;
 //* Módulo de usuarios
 export const Usuarios = {
   login: backend + "auth/login",
-  getToken: backend + "auth/login/token",
   getAll: backend + "auth/usuarios",
   create: backend + "auth/usuarios",
   getOne: backend + "auth/usuarios/",
   update: backend + "auth/usuarios/",
   delete: backend + "auth/usuarios/",
+  getToken: backend + "auth/login/token",
+  getRepartidores: backend + "auth/usuarios/repartidores",
 };
 
 //* Módulo de vehiculos
@@ -31,8 +32,10 @@ export const Folios = {
   getOne: backend + "document/folios/",
   update: backend + "document/folios/",
   delete: backend + "document/folios/",
+  getRutas: backend + "document/folios/rutas",
+  cargarFolios: backend + "document/folios/insertMany",
   getActuales: backend + "document/folios/obtenerFolios",
-  cargarFolios: backend + "document/folios/cargarFolios",
+  validarEstadoCarga: backend + "document/folios/validarEstadoCarga",
 };
 
 //* Módulo de evidencias
@@ -59,5 +62,13 @@ export const Otros = {
     getOne: backend + "transport/estadoVehiculo/",
     update: backend + "transport/estadoVehiculo/",
     delete: backend + "transport/estadoVehiculo/",
+  },
+  Responsables: {
+    getAll: backend + "transport/responsables",
+    create: backend + "transport/responsables",
+    getOne: backend + "transport/responsables/",
+    update: backend + "transport/responsables/",
+    delete: backend + "transport/responsables/",
+    insertMany: backend + "transport/responsables/insertMany",
   },
 };
