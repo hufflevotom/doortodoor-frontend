@@ -107,16 +107,6 @@ const Vehiculos = () => {
       key: "placa",
     },
     {
-      title: "Marca",
-      dataIndex: "marca",
-      key: "marca",
-    },
-    {
-      title: "Color",
-      dataIndex: "color",
-      key: "color",
-    },
-    {
       title: "SOAT",
       dataIndex: "vencimientoSoat",
       key: "vencimientoSoat",

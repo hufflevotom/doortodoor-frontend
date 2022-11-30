@@ -3,14 +3,16 @@ import React, { useState, useEffect } from "react";
 import { Card, Divider, Modal, Table } from "antd";
 
 import Boton from "../../components/Boton/Boton";
-import ModalUsuario from "./ModalUsuario";
+import ModalUsuario from "./usuario.modal";
 
 import { usuario } from "../../models/usuario";
 import { usuariosService } from "../../services";
 import { openNotification } from "../../util/utils";
+import InfoUsuario from "./usuario.drawer";
 
 const Usuarios = () => {
   const confirm = Modal.confirm;
+  const [verDetalle, setVerDetalle] = useState(false);
   const [verModal, setVerModal] = useState(false);
   const [datoSeleccionado, setDatoSeleccionado] = useState(usuario);
   const [tipo, setTipo] = useState(null);
@@ -22,6 +24,11 @@ const Usuarios = () => {
     showSizeChanger: true,
     pageSizeOptions: [5, 10, 20],
   });
+
+  const showInfo = (dato) => {
+    setDatoSeleccionado(dato);
+    setVerDetalle(true);
+  };
 
   const agregar = () => {
     setDatoSeleccionado({ ...usuario });
@@ -112,22 +119,20 @@ const Usuarios = () => {
       dataIndex: ["idTipoRol", "descripcion"],
       key: "rol",
     },
-    // {
-    // 	title: "Brevete",
-    // 	dataIndex: "brevete",
-    // 	key: "brevete",
-    // 	render: (text) => {
-    // 		return <span>{moment(text).format("DD/MM/YYYY")}</span>;
-    // 	}
-    // },
     {
       title: "",
       key: "action",
       width: 150,
       render: (text, record) => (
         <span>
-          {/* <span className="gx-link"> <i onClick={() => console.log('ver')} className="icon icon-view-o" style={{ fontSize: 20 }} /></span>
-                    <Divider type="vertical" /> */}
+          <span className="gx-link">
+            <i
+              onClick={() => showInfo(record)}
+              className="icon icon-view-o"
+              style={{ fontSize: 20 }}
+            />
+          </span>
+          <Divider type="vertical" />
           <span className="gx-link">
             {" "}
             <i
@@ -180,6 +185,13 @@ const Usuarios = () => {
           datoSeleccionado={datoSeleccionado}
           setVerModal={setVerModal}
           tipo={tipo}
+        />
+      ) : null}
+      {verDetalle ? (
+        <InfoUsuario
+          show={verDetalle}
+          setShow={setVerDetalle}
+          data={datoSeleccionado}
         />
       ) : null}
     </Card>
