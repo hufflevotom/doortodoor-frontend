@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 import { Card, Divider, Modal, Table } from "antd";
-import moment from "moment";
 
 import Boton from "../../components/Boton/Boton";
-import ModalVehiculo from "./ModalVehiculo";
+import ModalUsuario from "./usuario.modal";
 
-import { vehiculo } from "../../models/vehiculo";
-import { vehiculosService } from "../../services";
+import { usuario } from "../../models/usuario";
+import { usuariosService } from "../../services";
 import { openNotification } from "../../util/utils";
+import InfoUsuario from "./usuario.drawer";
 
-const Vehiculos = () => {
+const Usuarios = () => {
   const confirm = Modal.confirm;
+  const [verDetalle, setVerDetalle] = useState(false);
   const [verModal, setVerModal] = useState(false);
-  const [datoSeleccionado, setDatoSeleccionado] = useState(vehiculo);
+  const [datoSeleccionado, setDatoSeleccionado] = useState(usuario);
   const [tipo, setTipo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -24,8 +25,13 @@ const Vehiculos = () => {
     pageSizeOptions: [5, 10, 20],
   });
 
+  const showInfo = (dato) => {
+    setDatoSeleccionado(dato);
+    setVerDetalle(true);
+  };
+
   const agregar = () => {
-    setDatoSeleccionado({ ...vehiculo });
+    setDatoSeleccionado({ ...usuario });
     setTipo("agregar");
     setVerModal(true);
   };
@@ -42,7 +48,7 @@ const Vehiculos = () => {
 
   const showDeleteConfirm = (record) => {
     confirm({
-      title: "¿Esta seguro que desea eliminar " + record.placa + "?",
+      title: "¿Esta seguro que desea eliminar " + record.documento + "?",
       content: "",
       okText: "Eliminar",
       okType: "danger",
@@ -59,13 +65,10 @@ const Vehiculos = () => {
     const limit = pagination.pageSize;
     const offset =
       pagination.current * pagination.pageSize - pagination.pageSize;
-    const respuesta = await vehiculosService.getAll(limit, offset, "");
+    const respuesta = await usuariosService.getAll(limit, offset, "");
     const data = respuesta.data.body.map((e, i) => ({
       ...e,
       key: i,
-      fechaFabricacion: moment(e.fechaFabricacion),
-      vencimientoSoat: moment(e.vencimientoSoat),
-      vencimientoRevision: moment(e.vencimientoRevision),
     }));
     setLoading(false);
     setData([...data]);
@@ -74,13 +77,12 @@ const Vehiculos = () => {
 
   const eliminarData = async (record) => {
     setLoading(true);
-    const respuesta = await vehiculosService.delete(record._id);
+    const respuesta = await usuariosService.delete(record._id);
     if (respuesta.data.statusCode === 200) {
-      console.log(respuesta);
       traerDatos(paginacion);
       openNotification(
         "Registro Eliminado",
-        record.placa + " fue eliminado con exito",
+        record.documento + " fue eliminado con exito",
         ""
       );
       setLoading(false);
@@ -95,40 +97,27 @@ const Vehiculos = () => {
 
   const columns = [
     {
-      title: "Placa",
-      dataIndex: "placa",
-      key: "placa",
+      title: "Documento de Identidad",
+      dataIndex: "documento",
+      key: "documento",
     },
     {
-      title: "Marca",
-      dataIndex: "marca",
-      key: "marca",
-    },
-    {
-      title: "Color",
-      dataIndex: "color",
-      key: "color",
-    },
-    {
-      title: "SOAT",
-      dataIndex: "vencimientoSoat",
-      key: "vencimientoSoat",
-      render: (text) => {
-        return <span>{text.format("DD/MM/YYYY")}</span>;
+      title: "Nombre",
+      dataIndex: "nombre",
+      key: "nombre",
+      render: (text, record) => {
+        return <span>{`${record.nombre} ${record.apellidos}`}</span>;
       },
     },
     {
-      title: "Revisión técnica",
-      dataIndex: "vencimientoRevision",
-      key: "vencimientoRevision",
-      render: (text) => {
-        return <span>{text.format("DD/MM/YYYY")}</span>;
-      },
+      title: "Celular",
+      dataIndex: "celular",
+      key: "celular",
     },
     {
-      title: "Estado",
-      dataIndex: ["idEstadoVehiculo", "descripcion"],
-      key: "idEstadoVehiculo",
+      title: "Rol",
+      dataIndex: ["idTipoRol", "descripcion"],
+      key: "rol",
     },
     {
       title: "",
@@ -136,8 +125,14 @@ const Vehiculos = () => {
       width: 150,
       render: (text, record) => (
         <span>
-          {/* <span className="gx-link"> <i onClick={() => console.log('ver')} className="icon icon-view-o" style={{ fontSize: 20 }} /></span>
-                    <Divider type="vertical" /> */}
+          <span className="gx-link">
+            <i
+              onClick={() => showInfo(record)}
+              className="icon icon-view-o"
+              style={{ fontSize: 20 }}
+            />
+          </span>
+          <Divider type="vertical" />
           <span className="gx-link">
             {" "}
             <i
@@ -171,8 +166,8 @@ const Vehiculos = () => {
 
   return (
     <Card
-      title="Lista de vehiculos"
-      extra={<Boton type="primary" onClick={agregar} name="Agregar Vehiculo" />}
+      title="Lista de usuarios"
+      extra={<Boton type="primary" onClick={agregar} name="Agregar Usuario" />}
     >
       <Table
         style={{ width: "100%", textAlign: "center" }}
@@ -184,7 +179,7 @@ const Vehiculos = () => {
         onChange={handleTableChange}
       />
       {verModal ? (
-        <ModalVehiculo
+        <ModalUsuario
           traerDatos={traerDatos}
           verModal={verModal}
           datoSeleccionado={datoSeleccionado}
@@ -192,8 +187,15 @@ const Vehiculos = () => {
           tipo={tipo}
         />
       ) : null}
+      {verDetalle ? (
+        <InfoUsuario
+          show={verDetalle}
+          setShow={setVerDetalle}
+          data={datoSeleccionado}
+        />
+      ) : null}
     </Card>
   );
 };
 
-export default Vehiculos;
+export default Usuarios;

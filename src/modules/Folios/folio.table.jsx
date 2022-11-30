@@ -9,7 +9,8 @@ import { openNotification } from "../../util/utils";
 import { folio } from "../../models/folio";
 import { foliosService } from "../../services";
 
-import ModalFolios from "./ModalFolios";
+import ModalFolios from "./folio.modal";
+import InfoFolio from "./folio.drawer";
 
 const Folios = () => {
   const [searchText, setSearchText] = useState("");
@@ -17,6 +18,7 @@ const Folios = () => {
   const searchInput = useRef(null);
 
   const confirm = Modal.confirm;
+  const [verDetalle, setVerDetalle] = useState(false);
   const [verModal, setVerModal] = useState(false);
   const [datoSeleccionado, setDatoSeleccionado] = useState(folio);
   const [tipo, setTipo] = useState(null);
@@ -28,6 +30,11 @@ const Folios = () => {
     showSizeChanger: true,
     pageSizeOptions: [5, 10, 20],
   });
+
+  const showInfo = (dato) => {
+    setDatoSeleccionado(dato);
+    setVerDetalle(true);
+  };
 
   const agregar = () => {
     setDatoSeleccionado({ ...folio });
@@ -249,11 +256,17 @@ const Folios = () => {
     {
       title: "",
       key: "action",
-      width: 100,
+      width: 150,
       render: (text, record) => (
         <span>
-          {/* <span className="gx-link"> <i onClick={() => console.log('ver')} className="icon icon-view-o" style={{ fontSize: 20 }} /></span>
-                    <Divider type="vertical" /> */}
+          <span className="gx-link">
+            <i
+              onClick={() => showInfo(record)}
+              className="icon icon-view-o"
+              style={{ fontSize: 20 }}
+            />
+          </span>
+          <Divider type="vertical" />
           <span className="gx-link">
             <i
               onClick={() => editar(record)}
@@ -308,6 +321,13 @@ const Folios = () => {
           datoSeleccionado={datoSeleccionado}
           setVerModal={setVerModal}
           tipo={tipo}
+        />
+      ) : null}
+      {verDetalle ? (
+        <InfoFolio
+          show={verDetalle}
+          setShow={setVerDetalle}
+          data={datoSeleccionado}
         />
       ) : null}
     </Card>
