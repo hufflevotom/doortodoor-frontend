@@ -4,14 +4,16 @@ import { Card, Divider, Modal, Table } from "antd";
 import moment from "moment";
 
 import Boton from "../../components/Boton/Boton";
-import ModalVehiculo from "./ModalVehiculo";
+import ModalVehiculo from "./vehiculo.modal";
 
 import { vehiculo } from "../../models/vehiculo";
 import { vehiculosService } from "../../services";
 import { openNotification } from "../../util/utils";
+import InfoVehiculo from "./vehiculo.drawer";
 
 const Vehiculos = () => {
   const confirm = Modal.confirm;
+  const [verDetalle, setVerDetalle] = useState(false);
   const [verModal, setVerModal] = useState(false);
   const [datoSeleccionado, setDatoSeleccionado] = useState(vehiculo);
   const [tipo, setTipo] = useState(null);
@@ -23,6 +25,11 @@ const Vehiculos = () => {
     showSizeChanger: true,
     pageSizeOptions: [5, 10, 20],
   });
+
+  const showInfo = (dato) => {
+    setDatoSeleccionado(dato);
+    setVerDetalle(true);
+  };
 
   const agregar = () => {
     setDatoSeleccionado({ ...vehiculo });
@@ -136,8 +143,14 @@ const Vehiculos = () => {
       width: 150,
       render: (text, record) => (
         <span>
-          {/* <span className="gx-link"> <i onClick={() => console.log('ver')} className="icon icon-view-o" style={{ fontSize: 20 }} /></span>
-                    <Divider type="vertical" /> */}
+          <span className="gx-link">
+            <i
+              onClick={() => showInfo(record)}
+              className="icon icon-view-o"
+              style={{ fontSize: 20 }}
+            />
+          </span>
+          <Divider type="vertical" />
           <span className="gx-link">
             {" "}
             <i
@@ -190,6 +203,13 @@ const Vehiculos = () => {
           datoSeleccionado={datoSeleccionado}
           setVerModal={setVerModal}
           tipo={tipo}
+        />
+      ) : null}
+      {verDetalle ? (
+        <InfoVehiculo
+          show={verDetalle}
+          setShow={setVerDetalle}
+          data={datoSeleccionado}
         />
       ) : null}
     </Card>
