@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import Map, { GeolocateControl } from "react-map-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
 import Pin from "./Pin";
 import { Card, Col, Row } from "antd";
 import FirebaseConfig from "../../firebase";
 import moment from "moment/moment";
 import { foliosService } from "../../services/folios.service";
 import { responsablesService } from "../../services/responsables.service";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import "./styles.css";
 
 const Monitoreo = () => {
   const [folios, setFolios] = useState([]);
@@ -95,6 +96,17 @@ const Monitoreo = () => {
     }
   }, [viewport]);
 
+  useEffect(() => {
+    if (actualCard && actualCard.responsable) {
+      const responsable = vehiculos.find(
+        (v) => v.id === actualCard.responsable._id
+      );
+      if (!responsable) {
+        setActualCard();
+      }
+    }
+  }, [vehiculos]);
+
   return (
     <>
       <Map
@@ -102,6 +114,7 @@ const Monitoreo = () => {
         initialViewState={viewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
         style={{ height: "500px", width: "100%", margin: 0 }}
+        onClick={() => setActualCard()}
       >
         <GeolocateControl
           positionOptions={{ enableHighAccuracy: true }}
@@ -112,11 +125,24 @@ const Monitoreo = () => {
             longitude={f.idDetalleEntrega.idUbicacionEntrega.longitud}
             latitude={f.idDetalleEntrega.idUbicacionEntrega.latitud}
             type="Folio"
-            state={f.idEstado.descripcion}
+            state={
+              actualCard && actualCard.folio._id === f._id
+                ? "Activo"
+                : f.idEstado.descripcion
+            }
           />
         ))}
         {vehiculos.map((v) => (
-          <Pin longitude={v.lng} latitude={v.lat} onClick={() => showCard(v)} />
+          <Pin
+            longitude={v.lng}
+            latitude={v.lat}
+            onClick={() => showCard(v)}
+            state={
+              actualCard && actualCard.responsable._id === v.id
+                ? "Activo"
+                : "En camino"
+            }
+          />
         ))}
       </Map>
       <Card style={{ marginTop: "-30px", zIndex: "100" }}>

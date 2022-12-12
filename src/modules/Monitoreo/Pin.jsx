@@ -7,6 +7,9 @@ import { globalVariables } from "../../global.style";
 function Pin({ longitude, latitude, type, state, onClick }) {
   let color = globalVariables.color.gris[100];
   switch (state) {
+    case "Activo":
+      color = globalVariables.color.rojo[100];
+      break;
     case "Entregado":
       color = globalVariables.color.verde[100];
       break;
@@ -28,7 +31,10 @@ function Pin({ longitude, latitude, type, state, onClick }) {
     type === "Folio" ? (
       <GiftTwoTone style={style} twoToneColor={color} />
     ) : (
-      <CarTwoTone style={{ ...style, cursor: "pointer" }} />
+      <CarTwoTone
+        style={{ ...style, cursor: "pointer" }}
+        twoToneColor={color}
+      />
     );
   return (
     <Marker longitude={longitude} latitude={latitude} onClick={onClick}>
