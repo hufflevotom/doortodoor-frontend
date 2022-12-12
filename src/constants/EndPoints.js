@@ -28,6 +28,7 @@ export const Vehiculos = {
 //* Módulo de folios
 export const Folios = {
   getAll: backend + "document/folios",
+  getAllByDate: backend + "document/folios/fecha/",
   create: backend + "document/folios",
   getOne: backend + "document/folios/",
   getMany: backend + "document/folios/multiples",
@@ -66,6 +67,7 @@ export const Otros = {
   },
   Responsables: {
     getAll: backend + "transport/responsables",
+    getAllByDate: backend + "transport/responsables/fecha/",
     create: backend + "transport/responsables",
     getOne: backend + "transport/responsables/",
     update: backend + "transport/responsables/",

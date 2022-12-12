@@ -1,12 +1,20 @@
 import { Otros } from "../constants/EndPoints";
 import { httpClient } from "../util/Api";
 
-const getAll = async (limit, offset, busqueda = "", criterio) => {
+const getAllByDate = async (limit, offset, dateString, busqueda = "") => {
+  return await httpClient.get(
+    `${
+      Otros.Responsables.getAllByDate
+    }${dateString}?limit=${limit}&offset=${offset}${
+      busqueda && busqueda !== "" ? `&busqueda=${busqueda}` : ""
+    }`
+  );
+};
+
+const getAll = async (limit, offset, busqueda = "") => {
   return await httpClient.get(
     `${Otros.Responsables.getAll}?limit=${limit}&offset=${offset}${
-      busqueda && criterio && busqueda !== "" && criterio !== ""
-        ? `&criterio=${criterio}&busqueda=${busqueda}`
-        : ""
+      busqueda && busqueda !== "" ? `&busqueda=${busqueda}` : ""
     }`
   );
 };
@@ -33,6 +41,7 @@ const _delete = async (id) => {
 
 export const responsablesService = {
   getAll,
+  getAllByDate,
   create,
   getOne,
   update,

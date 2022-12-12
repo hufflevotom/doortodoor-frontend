@@ -11,6 +11,14 @@ const getAll = async (limit, offset, busqueda = "", criterio) => {
   );
 };
 
+const getAllByDate = async (limit, offset, busqueda = "", date) => {
+  return await httpClient.get(
+    `${Folios.getAllByDate}${date}?limit=${limit}&offset=${offset}${
+      busqueda && busqueda !== "" ? `&busqueda=${busqueda}` : ""
+    }`
+  );
+};
+
 const create = async (body) => {
   return await httpClient.post(Folios.create, body);
 };
@@ -45,6 +53,7 @@ const _delete = async (id) => {
 
 export const foliosService = {
   getAll,
+  getAllByDate,
   create,
   cargarFolios,
   getOne,

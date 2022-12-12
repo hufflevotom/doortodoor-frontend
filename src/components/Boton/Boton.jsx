@@ -3,7 +3,14 @@ import React from "react";
 import { Button } from "antd";
 import { globalVariables } from "../../global.style";
 
-const Boton = ({ name, onClick, style, type = "primary", loader }) => {
+const Boton = ({
+  name,
+  onClick,
+  style,
+  type = "primary",
+  loader,
+  disabled = false,
+}) => {
   let estilo = { margin: 0, fontSize: "14px" };
   switch (type) {
     case "submit":
@@ -42,7 +49,12 @@ const Boton = ({ name, onClick, style, type = "primary", loader }) => {
     );
   }
   return (
-    <Button onClick={onClick} style={{ ...estilo, ...style }} loading={loader}>
+    <Button
+      onClick={onClick}
+      style={{ ...estilo, ...style }}
+      loading={loader}
+      disabled={disabled}
+    >
       {name}
     </Button>
   );

@@ -1,1 +1,1 @@
-export { default } from './Evidencias';
+export { default } from './evidencias.card';
