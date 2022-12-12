@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import Map, { GeolocateControl } from "react-map-gl";
-import Pin from "./Pin";
 import { Card, Col, Row } from "antd";
-import FirebaseConfig from "../../firebase";
 import moment from "moment/moment";
-import { foliosService } from "../../services/folios.service";
-import { responsablesService } from "../../services/responsables.service";
-import 'mapbox-gl/dist/mapbox-gl.css';
+//* Styles
+import "mapbox-gl/dist/mapbox-gl.css";
 import "./styles.css";
+//* Firebase
+import FirebaseConfig from "../../firebase";
+//* Components
+import Pin from "./pin.marker";
+//* Services
+import { foliosService, responsablesService } from "../../services";
 
 const Monitoreo = () => {
   const [folios, setFolios] = useState([]);

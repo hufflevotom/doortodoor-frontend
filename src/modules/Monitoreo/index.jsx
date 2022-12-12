@@ -1,1 +1,1 @@
-export { default } from './Monitoreo';
+export { default } from './monitoreo.map';

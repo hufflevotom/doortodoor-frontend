@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { generateModules } from "../../util/generateModules";
 import { globalVariables } from "../../global.style";
 import { CloudUploadOutlined } from "@ant-design/icons";
-import CargaMasiva from "../../modules/CargaMasiva/CargaMasiva";
+import CargaMasiva from "../../modules/CargaMasiva";
 
 const SidebarContent = ({ sidebarCollapsed, setSidebarCollapsed }) => {
   const [verModalCargaMasiva, setVerModalCargaMasiva] = useState(false);

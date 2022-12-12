@@ -1,1 +1,1 @@
-export { default } from './CargaMasiva';
+export { default } from './cargaMasiva.modal';

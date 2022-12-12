@@ -9,7 +9,7 @@ import UploadFile from "../../assets/images/uploadFile.svg";
 // * Components
 import Boton from "../../components/Boton/Boton";
 import { openNotification } from "../../util/utils";
-import HabilitarVehiculos from "./HibilitarVehiculos";
+import HabilitarVehiculos from "./habilitarVehiculos.modal";
 // * Services
 import { foliosService } from "../../services/folios.service";
 

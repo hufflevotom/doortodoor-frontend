@@ -15,7 +15,7 @@ import {
   usuariosService,
   responsablesService,
 } from "../../services";
-import ModalResult from "./ModalResult";
+import ModalResult from "./mensajeSuccess.modal";
 
 const HabilitarVehiculos = ({ verModal, setVerModal, setVerModalCarga }) => {
   const [form] = Form.useForm();
