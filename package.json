@@ -19,7 +19,7 @@
     "connected-react-router": "^6.8.0",
     "d3-scale": "^3.2.3",
     "draftjs-to-html": "^0.9.1",
-    "firebase": "^8.2.3",
+    "firebase": "^8.10.1",
     "instantsearch.css": "^7.4.5",
     "less": "^4.1.0",
     "less-loader": "5.0.0",

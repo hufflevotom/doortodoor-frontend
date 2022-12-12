@@ -17,7 +17,8 @@ const estilo = { fontSize: "20px" };
 
 export const Modulos = [
   {
-    key: "1-inicio",
+    orden: 0,
+    key: "Inicio",
     modulo: "inicio",
     ruta: "Inicio",
     descripcion: "Inicio",
@@ -25,7 +26,8 @@ export const Modulos = [
     subMenu: false,
   },
   {
-    key: "2-monitoreo",
+    orden: 1,
+    key: "Monitoreo",
     modulo: "monitoreo",
     ruta: "Monitoreo",
     descripcion: "Monitoreo",
@@ -33,7 +35,8 @@ export const Modulos = [
     subMenu: false,
   },
   {
-    key: "3-evidencias",
+    orden: 2,
+    key: "Evidencias",
     modulo: "evidencias",
     ruta: "Evidencias",
     descripcion: "Evidencias",
@@ -41,7 +44,8 @@ export const Modulos = [
     subMenu: false,
   },
   {
-    key: "4-folios",
+    orden: 3,
+    key: "Folios",
     modulo: "folios",
     ruta: "Folios",
     descripcion: "Folios",
@@ -49,7 +53,8 @@ export const Modulos = [
     subMenu: false,
   },
   {
-    key: "5-usuarios",
+    orden: 4,
+    key: "Usuarios",
     modulo: "usuarios",
     ruta: "Usuarios",
     descripcion: "Usuarios",
@@ -57,29 +62,12 @@ export const Modulos = [
     subMenu: false,
   },
   {
-    key: "6-vehiculos",
+    orden: 5,
+    key: "Vehiculos",
     modulo: "vehiculos",
     ruta: "Vehiculos",
     descripcion: "Vehiculos",
     icono: <CarOutlined style={estilo} />,
     subMenu: false,
   },
-  //   {
-  //     key: "6-configuracion",
-  //     modulo: "configuracion",
-  //     ruta: "Configuracion",
-  //     descripcion: "Configuración",
-  //     icono: "icon-setting",
-  //     subMenu: true,
-  //     hijos: [
-  //       {
-  //         key: "1-metodosPago",
-  //         modulo: "metodosPago",
-  //         ruta: "Configuracion/MetodosPago",
-  //         descripcion: "Métodos de Pago",
-  //         icono: "icon-card",
-  //         subMenu: false,
-  //       },
-  //     ],
-  //   },
 ];

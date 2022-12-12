@@ -122,11 +122,11 @@ const Vehiculos = () => {
         return <span>{text.format("DD/MM/YYYY")}</span>;
       },
     },
-    {
-      title: "Estado",
-      dataIndex: ["idEstadoVehiculo", "descripcion"],
-      key: "idEstadoVehiculo",
-    },
+    // {
+    //   title: "Estado",
+    //   dataIndex: ["idEstadoVehiculo", "descripcion"],
+    //   key: "idEstadoVehiculo",
+    // },
     {
       title: "",
       key: "action",

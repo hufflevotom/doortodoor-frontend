@@ -30,6 +30,7 @@ export const Folios = {
   getAll: backend + "document/folios",
   create: backend + "document/folios",
   getOne: backend + "document/folios/",
+  getMany: backend + "document/folios/multiples",
   update: backend + "document/folios/",
   delete: backend + "document/folios/",
   getRutas: backend + "document/folios/rutas",

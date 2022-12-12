@@ -4,7 +4,7 @@ import React from "react";
 import { Marker } from "react-map-gl";
 import { globalVariables } from "../../global.style";
 
-function Pin({ longitude, latitude, type, state }) {
+function Pin({ longitude, latitude, type, state, onClick }) {
   let color = globalVariables.color.gris[100];
   switch (state) {
     case "Entregado":
@@ -28,10 +28,10 @@ function Pin({ longitude, latitude, type, state }) {
     type === "Folio" ? (
       <GiftTwoTone style={style} twoToneColor={color} />
     ) : (
-      <CarTwoTone style={style} />
+      <CarTwoTone style={{ ...style, cursor: "pointer" }} />
     );
   return (
-    <Marker longitude={longitude} latitude={latitude}>
+    <Marker longitude={longitude} latitude={latitude} onClick={onClick}>
       {pin}
     </Marker>
   );

@@ -44,25 +44,70 @@ export const generateModules = (token, tipo, match, navStyle) => {
     if (tipo === "ruta") {
       // Generar rutas
       rutas.forEach((a) => {
-        items.push(
-          <Route
-            key={a.key}
-            path={`${match.url + a.ruta}`}
-            component={asyncComponent(() => import("../modules/" + a.ruta))}
-          />
-        );
+        items.push({
+          orden: a.orden,
+          item: (
+            <Route
+              key={a.key}
+              path={`${match.url + a.ruta}`}
+              component={asyncComponent(() => import("../modules/" + a.ruta))}
+            />
+          ),
+        });
       });
     } else {
       // Generar el menu
       hijos.forEach((a) => {
         if (a.subMenu) {
           // Contienen hijos
-          items.push(
-            <SubMenu
-              key={a.key}
-              popupClassName={match(navStyle)}
-              title={
-                <span
+          items.push({
+            orden: a.orden,
+            item: (
+              <SubMenu
+                key={a.key}
+                popupClassName={match(navStyle)}
+                title={
+                  <span
+                    style={{
+                      display: "flex",
+                      flexDirecction: "row",
+                      alignItems: "center",
+                      justifyContent: "start",
+                    }}
+                  >
+                    {a.icono}
+                    <span>{a.descripcion}</span>
+                  </span>
+                }
+              >
+                {a.hijos &&
+                  a.hijos.map((e) => (
+                    <Menu.Item key={e.key}>
+                      <Link
+                        to={"/" + e.ruta}
+                        style={{
+                          display: "flex",
+                          flexDirecction: "row",
+                          alignItems: "center",
+                          justifyContent: "start",
+                        }}
+                      >
+                        {a.icono}
+                        <span>{e.descripcion}</span>
+                      </Link>
+                    </Menu.Item>
+                  ))}
+              </SubMenu>
+            ),
+          });
+        } else {
+          // No contienen hijos
+          items.push({
+            orden: a.orden,
+            item: (
+              <Menu.Item key={a.key}>
+                <Link
+                  to={"/" + a.ruta}
                   style={{
                     display: "flex",
                     flexDirecction: "row",
@@ -72,59 +117,23 @@ export const generateModules = (token, tipo, match, navStyle) => {
                 >
                   {a.icono}
                   <span>{a.descripcion}</span>
-                </span>
-              }
-            >
-              {a.hijos &&
-                a.hijos.map((e) => (
-                  <Menu.Item key={e.key}>
-                    <Link
-                      to={"/" + e.ruta}
-                      style={{
-                        display: "flex",
-                        flexDirecction: "row",
-                        alignItems: "center",
-                        justifyContent: "start",
-                      }}
-                    >
-                      {a.icono}
-                      <span>{e.descripcion}</span>
-                    </Link>
-                  </Menu.Item>
-                ))}
-            </SubMenu>
-          );
-        } else {
-          // No contienen hijos
-          items.push(
-            <Menu.Item key={a.key}>
-              <Link
-                to={"/" + a.ruta}
-                style={{
-                  display: "flex",
-                  flexDirecction: "row",
-                  alignItems: "center",
-                  justifyContent: "start",
-                }}
-              >
-                {a.icono}
-                <span>{a.descripcion}</span>
-              </Link>
-            </Menu.Item>
-          );
+                </Link>
+              </Menu.Item>
+            ),
+          });
         }
       });
     }
   }
   // Ordenar items por keyName
   items.sort((a, b) => {
-    if (a.key < b.key) {
-      return -1;
-    }
-    if (a.key > b.key) {
-      return 1;
-    }
-    return 0;
-  });
-  return items;
+		if (a.orden < b.orden) {
+			return -1;
+		}
+		if (a.orden > b.orden) {
+			return 1;
+		}
+		return 0;
+	});
+  return items.map((a) => a.item);
 };
