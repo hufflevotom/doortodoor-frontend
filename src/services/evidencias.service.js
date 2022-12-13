@@ -20,6 +20,14 @@ const getOne = async (id) => {
   return response;
 };
 
+const getOneByFolioAndResponsable = async (folio, responsable) => {
+  const response = await httpClient.get(
+    Evidencias.getOneByFolioAndResponsable +
+      `?idFolio=${folio._id}&idResponsable=${responsable._id}`
+  );
+  return response;
+};
+
 const update = async (id, body) => {
   const response = await httpClient.put(Evidencias.update + id, body);
   return response;
@@ -34,6 +42,7 @@ export const evidenciasService = {
   getAll,
   create,
   getOne,
+  getOneByFolioAndResponsable,
   update,
   delete: _delete,
 };

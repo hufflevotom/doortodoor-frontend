@@ -42,11 +42,12 @@ export const Folios = {
 
 //* Módulo de evidencias
 export const Evidencias = {
-  getAll: backend + "document/evidencia",
-  create: backend + "document/evidencia",
-  getOne: backend + "document/evidencia/",
-  update: backend + "document/evidencia/",
-  delete: backend + "document/evidencia/",
+  getAll: backend + "document/evidencias",
+  create: backend + "document/evidencias",
+  getOne: backend + "document/evidencias/",
+  getOneByFolioAndResponsable: backend + "document/evidencias/delivery",
+  update: backend + "document/evidencias/",
+  delete: backend + "document/evidencias/",
 };
 
 //* Otros

@@ -3,16 +3,17 @@ import React from "react";
 
 function InfoFolio({ evidencia }) {
   return (
-    <Row>
+    <Row style={{ width: "100%", margin: 0, padding: 0 }}>
       <Col xs={7}>
         <div
           style={{
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            gap: "10px",
           }}
         >
-          <h5>Folio</h5>
+          <h4 style={{ marginBottom: "15px" }}>Folio</h4>
           <span>Número: {evidencia.folio.numeroFolio}</span>
           <span>Estado: {evidencia.folio.idEstado.descripcion}</span>
           <span>
@@ -80,9 +81,10 @@ function InfoFolio({ evidencia }) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            gap: "10px",
           }}
         >
-          <h5>Cliente</h5>
+          <h4 style={{ marginBottom: "15px" }}>Cliente</h4>
           <span>Documento: {evidencia.folio.idDetalleCliente.dni}</span>
           <span>Nombre: {evidencia.folio.idDetalleCliente.nombre}</span>
           <span>Teléfonos: {evidencia.folio.idDetalleCliente.telefono}</span>
@@ -99,9 +101,10 @@ function InfoFolio({ evidencia }) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            gap: "10px",
           }}
         >
-          <h5>Vehículo</h5>
+          <h4 style={{ marginBottom: "15px" }}>Vehículo</h4>
           <span>Placa: {evidencia.responsable.idVehiculo.placa}</span>
           <span>Marca: {evidencia.responsable.idVehiculo.marca}</span>
           <span>Modelo: {evidencia.responsable.idVehiculo.modelo}</span>
@@ -114,9 +117,10 @@ function InfoFolio({ evidencia }) {
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            gap: "10px",
           }}
         >
-          <h5>Responsable</h5>
+          <h4 style={{ marginBottom: "15px" }}>Responsable</h4>
           <span>Documento: {evidencia.responsable.idUsuario.documento}</span>
           <span>Nombre: {evidencia.responsable.idUsuario.nombre}</span>
           <span>Apellidos: {evidencia.responsable.idUsuario.apellidos}</span>

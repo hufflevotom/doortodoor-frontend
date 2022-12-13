@@ -83,7 +83,6 @@ const Vehiculos = () => {
     setLoading(true);
     const respuesta = await vehiculosService.delete(record._id);
     if (respuesta.data.statusCode === 200) {
-      console.log(respuesta);
       traerDatos(paginacion);
       openNotification(
         "Registro Eliminado",
